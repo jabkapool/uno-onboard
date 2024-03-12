@@ -1,0 +1,32 @@
+{
+  "name": "@risingstack/node-hero",
+  "version": "1.0.0",
+  "description": "NodeJs tutorial with javascript",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha test",
+    "custom-script": "echo npm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EQSDigital/uno-onboard.git"
+  },
+  "keywords": [
+    "NodeJs",
+    "Javascript",
+    "Tutorial"
+  ],
+  "author": "Joao Lopes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EQSDigital/uno-onboard/issues"
+  },
+  "homepage": "https://github.com/EQSDigital/uno-onboard#readme",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "mocha": "^10.3.0"
+  }
+}
