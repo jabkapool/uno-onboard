@@ -4,6 +4,8 @@
   "description": "typescript_nodejs_tutorial",
   "main": "app.js",
   "scripts": {
+    "serve": "node dist/index.js",
+    "start": "npm run serve",   
     "test": "mocha dist/**/*.spec.js",
     "tsc": "tsc"
   },
