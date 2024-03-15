@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 
-namespace Uno_Web_API.Controllers {
+namespace UnoWebAPI.Controllers {
     //[Authorize]
     [ApiController]
     [Route("[controller]")]

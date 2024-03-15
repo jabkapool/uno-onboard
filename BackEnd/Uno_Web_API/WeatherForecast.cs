@@ -1,4 +1,4 @@
-namespace Uno_Web_API {
+namespace UnoWebAPI {
     public class WeatherForecast {
         public DateOnly Date { get; set; }
 
