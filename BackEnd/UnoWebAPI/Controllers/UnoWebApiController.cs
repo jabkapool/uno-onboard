@@ -23,8 +23,7 @@ namespace UnoWebAPI.Controllers {
         }
 
         [HttpGet("CheckDbConnection")]
-        public IActionResult CheckDbConnection()
-        {
+        public IActionResult CheckDbConnection() {
             var connectionString = _configuration.GetConnectionString("UnoContext");
             using var connection = new SqlConnection(connectionString);
             try {
