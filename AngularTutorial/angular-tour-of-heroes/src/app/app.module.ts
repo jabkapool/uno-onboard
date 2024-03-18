@@ -16,6 +16,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { MessagesComponent } from './messages/messages.component';
 
 import { NgFor, NgIf, UpperCasePipe } from '@angular/common';
+import { LowerCaseUpperCasePipe } from './lowerCaseUpperCasePipe';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { NgFor, NgIf, UpperCasePipe } from '@angular/common';
     // Remove it when a real server is ready to receive requests.
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
-    )
+    ),
+    LowerCaseUpperCasePipe
   ],
   providers: [],
   bootstrap: [AppComponent]
