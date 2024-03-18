@@ -36,14 +36,4 @@ namespace UnoWebAPI.Controllers {
             }
         }   
     }
-
-    // O Projecto vai ter a seguinte estrutura:
-    // UnoWebAPI - Vai ter todos os endpoints necessários                   | WebApi project
-    // UnoWebApi.Domain             Entities, database models classes, etc  | Class Library project
-    // UnoWebApi.Application        Business logic, services, etc           | Class Library project
-    // UnoWebApi.Infrastructure     Database Migrations, DbContext, etc     | Class Library project
-    // UnoWebApi.Tests
-
-    // Se a estrutura ficar acordada a classe UnoWebApiVersion pode ser movida para o projecto UnoWebApi.Domain
-
 }
