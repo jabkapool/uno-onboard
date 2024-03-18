@@ -5,8 +5,8 @@ using Microsoft.Data.SqlClient;
 namespace UnoWebAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
-    public class UnoWebApiController: ControllerBase
-    {
+    public class UnoWebApiController: ControllerBase {
+
         private readonly IConfiguration _configuration;
 
         public UnoWebApiController(IConfiguration configuration) {
