@@ -24,7 +24,7 @@ namespace UnoWebAPI.Controllers {
 
         [HttpGet("CheckDbConnection")]
         public ActionResult CheckDbConnection() {
-            string connectionString = _configuration.GetConnectionString("UnoContext")!;
+            string connectionString = _configuration.GetConnectionString("UnoDbContext")!;
             using SqlConnection connection = new SqlConnection(connectionString);
             try {
                 connection.Open();

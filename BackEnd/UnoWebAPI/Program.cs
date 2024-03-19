@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using UnoWebApi.Infrastructure.Context;
+
 namespace UnoWebAPI {
     public class Program {
         public static void Main(string[] args) {
@@ -6,8 +9,11 @@ namespace UnoWebAPI {
             /*Add services to the container.   ** Not using Authorization yet **
             //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 //.AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));*/
-
+            
+            
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<UnoDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("UnoDbContext")));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
