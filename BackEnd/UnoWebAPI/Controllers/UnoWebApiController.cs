@@ -14,7 +14,7 @@ namespace UnoWebAPI.Controllers {
         }
 
         [HttpGet("Version")]
-        public IActionResult GetUnoWebApiVersion() {
+        public ActionResult<UnoWebApiVersion> GetUnoWebApiVersion() {
             var version = new UnoWebApiVersion {
                 Version = _configuration["UnoWebApiVersion"],
                 Timestamp = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture)
@@ -23,7 +23,7 @@ namespace UnoWebAPI.Controllers {
         }
 
         [HttpGet("CheckDbConnection")]
-        public IActionResult CheckDbConnection() {
+        public ActionResult CheckDbConnection() {
             var connectionString = _configuration.GetConnectionString("UnoContext");
             using var connection = new SqlConnection(connectionString);
             try {
