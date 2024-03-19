@@ -1,14 +1,11 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace UnoWebAPI {
     public class Program {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
-            var config = builder.Configuration;
 
-            // Add services to the container.
+            /*Add services to the container.   ** Not using Authorization yet **
             //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                //.AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+                //.AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));*/
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
