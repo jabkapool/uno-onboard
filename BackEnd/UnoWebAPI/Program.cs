@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using UnoWebApi.Domain.Entities;
 using UnoWebApi.Infrastructure.Context;
 
 namespace UnoWebAPI {
@@ -12,14 +13,17 @@ namespace UnoWebAPI {
             
             
             builder.Services.AddControllers();
+
             builder.Services.AddDbContext<UnoDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("UnoDbContext")));
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<UnoDbContext>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI();
