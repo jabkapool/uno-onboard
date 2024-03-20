@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UnoWebApi.Domain.Entities;
 using UnoWebApi.Infrastructure.Context;
@@ -16,8 +17,13 @@ namespace UnoWebAPI {
 
             builder.Services.AddDbContext<UnoDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("UnoDbContext")));
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<UnoDbContext>();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<UnoDbContext>()
+                .AddDefaultTokenProviders();
+
+            //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                //.AddEntityFrameworkStores<UnoDbContext>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
