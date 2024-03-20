@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "connectionInfo": "App registration: uno_onboarding_app_registration, Tenant: EQS Global (eqsglobal.com - Microsoft Entra ID)",
+      "secretStore": "LocalSecretsFile",
+      "type": "identityapp.secretStore",
+      "connectionId": "AzureAD:ClientSecret"
+    },
+    "secrets1": {
+      "type": "secrets.user",
+      "dynamicId": null
+    }
+  }
+}

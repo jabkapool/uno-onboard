@@ -1,0 +1,19 @@
+---
+root: true
+extends: airbnb-base
+env:
+  es6: true
+  node: true
+  mocha: true
+parser: typescript-eslint-parser
+parserOptions:
+  sourceType: module
+  ecmaFeatures:
+    modules: true
+
+# https://gist.github.com/marcelmokos/e2d6386872648d50f9581e54318305de  -- .eslintrc.yaml
+
+
+
+
+
