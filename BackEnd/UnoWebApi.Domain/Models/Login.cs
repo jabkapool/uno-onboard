@@ -3,10 +3,10 @@
 namespace UnoWebApi.Domain.Models {
     public class Login {
         /// <summary>
-        /// Name of the user.
+        /// The Email of the user.
         /// </summary>
-        [Required(ErrorMessage = "Name is required")]
-        public string? Name { get; set; }
+        [Required(ErrorMessage = "Email is required")]
+        public string? Email { get; set; }
 
         /// <summary>
         /// User password.

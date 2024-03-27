@@ -14,7 +14,9 @@ namespace UnoWebAPI.Services {
             services.AddDbContext<UnoDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("UnoDbContext")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => {
+                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzçABCDEFGHIJKLMNOPQRSTUVWXYZÇ ";
+                })
                 .AddEntityFrameworkStores<UnoDbContext>()
                 .AddDefaultTokenProviders();
 

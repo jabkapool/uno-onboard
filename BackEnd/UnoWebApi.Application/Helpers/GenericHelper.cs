@@ -1,5 +1,8 @@
-﻿namespace UnoWebApi.Application.Helpers {
-    public static class PasswordHelper {
+﻿using System.Globalization;
+using System.Text;
+
+namespace UnoWebApi.Application.Helpers {
+    public static class GenericHelper {
         /// <summary>
         /// Generates a random password with the following requirements: minimum 3 lowercase letters, 3 uppercase letters, 2 numbers, and 2 special characters.
         /// </summary>
@@ -19,6 +22,22 @@
             // Shuffle the result to ensure randomness
             password = new string(password.ToCharArray().OrderBy(_ => (Random.Next(2) % 2) == 0).ToArray());
             return password;
+        }
+
+        /// <summary>
+        /// Converts a string with accentuation eg Gonçálo to a string without accentuation eg Goncalo
+        /// </summary>
+        public static string RemoveDiacritics(string rawString) {
+            String normalizedString = rawString.Normalize(NormalizationForm.FormD);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for(int i = 0; i < normalizedString.Length; i++) {
+                Char c = normalizedString[i];
+                if(CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                    stringBuilder.Append(c);
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }

@@ -47,13 +47,14 @@ namespace UnoWebApi.Application.Services {
         /// <summary>
         /// Service to get a user by its name from controller  "GetUserByName"
         /// </summary>
-        public async Task<ApplicationUser?> GetUserByNameAsync(string name) {
+        public async Task<IEnumerable<ApplicationUser?>> GetUserByNameAsync(string name) {
 
             if(name.IsNullOrEmpty()) {
                 throw new ArgumentNullException(nameof(name));
             }
-            ApplicationUser? user = await _userManager.FindByNameAsync(name);
-            return user ?? null;
+            string normName = GenericHelper.RemoveDiacritics(name);
+            IEnumerable<ApplicationUser?> users = await _userManager.Users.Where(u => u.Name!.Contains(normName) || u.UserName!.Contains(normName)).ToListAsync();
+            return users;
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace UnoWebApi.Application.Services {
         /// </summary>
         public async Task<(int, string)> Registration(Registration model) {
 
-            ApplicationUser? userExists = await _userManager.FindByNameAsync(model.Name!);
+            ApplicationUser? userExists = await _userManager.FindByEmailAsync(model.Email!);
             if(userExists != null) {
                 return (0, "User already exists!");
             }
@@ -71,14 +72,14 @@ namespace UnoWebApi.Application.Services {
             ApplicationUser user = new() {
                 Id = Guid.NewGuid(),
                 Name = model.Name,
-                UserName = model.Name,
+                UserName = GenericHelper.RemoveDiacritics(model.Name!),
                 Email = model.Email,
                 Picture = await File.ReadAllBytesAsync(filePath),
                 PhoneNumber = model.PhoneNumber,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            string password = PasswordHelper.GenerateRandomPassword();
+            string password = GenericHelper.GenerateRandomPassword();
             IdentityResult createUserResult = await _userManager.CreateAsync(user, password);
 
             if(!createUserResult.Succeeded) {
@@ -107,10 +108,10 @@ namespace UnoWebApi.Application.Services {
         /// </summary>
         public async Task<(int, string)> Login(Login model) {
 
-            ApplicationUser? user = await _userManager.FindByNameAsync(model.Name!);
+            ApplicationUser? user = await _userManager.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
 
             if(user == null) {
-                return (0, "Invalid UserName");
+                return (0, "Invalid Email");
             }
             if(!await _userManager.CheckPasswordAsync(user, model.Password!)) {
                 return (0, "Invalid Password");

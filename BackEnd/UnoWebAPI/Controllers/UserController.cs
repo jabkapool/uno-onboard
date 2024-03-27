@@ -8,7 +8,6 @@ using UnoWebApi.Domain.Models;
 
 namespace UnoWebAPI.Controllers {
 
-    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController: ControllerBase {
@@ -23,7 +22,7 @@ namespace UnoWebAPI.Controllers {
         /// Get all the users in the system.
         /// </summary>
         /// <returns>All the users in the system.</returns>
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAllUsers() {
 
@@ -36,7 +35,7 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="id">The Guid of the user.</param>
         /// <returns>The user object.</returns>
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("GetUserById/{id}")]
         public async Task<ActionResult<ApplicationUser?>> GetUserById(Guid id) {
 
@@ -52,14 +51,11 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="name">string with the name of the user.</param>
         /// <returns>The user object.</returns>
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("GetUserByName")]
-        public async Task<ActionResult<ApplicationUser?>> GetUserByName(string name) {
+        public async Task<ActionResult<IEnumerable<ApplicationUser?>>> GetUserByName(string name) {
 
-            ApplicationUser? user = await _userService.GetUserByNameAsync(name);
-            if(user == null) {
-                return NotFound("User not found!");
-            }
+            IEnumerable<ApplicationUser?> user = await _userService.GetUserByNameAsync(name);
             return Ok(user);
         }
 
@@ -68,6 +64,7 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="model">The registration model with the required information to fill: Name. Email, Role, Phone.</param>
         /// <returns>User created if successful.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
         public async Task<IActionResult> Register(Registration model) {
 
@@ -114,12 +111,13 @@ namespace UnoWebAPI.Controllers {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        
+
         /// <summary>
         /// Http method to update a user in the system.
         /// </summary>
         /// <param name="userDto">The Dto with the fields that can be updated: Name. Email, Phone.</param>
         /// <returns>The updated user.</returns>
+        [Authorize(Roles="Admin")]
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] ApplicationUserDto userDto) {
 
@@ -149,6 +147,7 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="id">id of the user to be deleted.</param>
         /// <returns>Message: User deleted successfully!</returns>
+        [Authorize(Roles="Admin")]
         [HttpDelete("DeleteUserById/{id}")]
         public async Task<IActionResult> DeleteUserByIdAsync(Guid id) {
 

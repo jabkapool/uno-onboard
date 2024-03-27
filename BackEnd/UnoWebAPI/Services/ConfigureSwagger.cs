@@ -4,7 +4,7 @@ namespace UnoWebAPI.Services {
     public static class ConfigureSwagger {
         public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services) {
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            services.AddEndpointsApiExplorer();
+
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UnoWebAPI", Version = "v1" });

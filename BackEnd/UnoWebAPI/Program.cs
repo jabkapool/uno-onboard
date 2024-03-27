@@ -7,6 +7,14 @@ namespace UnoWebAPI {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             ConfigurationManager config = builder.Configuration;
 
+            builder.Services.AddEndpointsApiExplorer();
+            string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options => {
+                options.AddPolicy(myAllowSpecificOrigins, policy => {
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
             builder.Services.AddRegisterServices(builder);
             builder.Services.AddSwaggerConfiguration();
             builder.Services.AddAuthenticationConfiguration(config);
@@ -20,6 +28,7 @@ namespace UnoWebAPI {
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors(myAllowSpecificOrigins);
             app.MapControllers();
             app.Run();
         }
