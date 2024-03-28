@@ -1,19 +1,25 @@
+using UnoWebAPI.Services;
+
 namespace UnoWebAPI {
     public class Program {
         public static void Main(string[] args) {
-            var builder = WebApplication.CreateBuilder(args);
 
-            /*Add services to the container.   ** Not using Authorization yet **
-            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                //.AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));*/
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            ConfigurationManager config = builder.Configuration;
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options => {
+                options.AddPolicy(myAllowSpecificOrigins, policy => {
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
 
-            var app = builder.Build();
+            builder.Services.AddRegisterServices(builder);
+            builder.Services.AddSwaggerConfiguration();
+            builder.Services.AddAuthenticationConfiguration(config);
 
+            WebApplication app = builder.Build();
             // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -22,6 +28,7 @@ namespace UnoWebAPI {
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors(myAllowSpecificOrigins);
             app.MapControllers();
             app.Run();
         }
