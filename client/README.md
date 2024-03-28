@@ -7,38 +7,36 @@ https://github.com/EQSDigital/uno-onboard
 Open the UnoWebApi.sln in Visual Studio, in the folder Backend and run the backend Web APi.
 Open this client in Visual Studio Code, in the folder client. type `ng serve` and open the browser in `http://localhost:4200/`.
 
-# Folder structure
-The project will be structured this way:
-src-
-	assets       -
-	environments -
-	app          -
-		         services    -
-                               api-version.service.ts
-                               user.service.ts                             
-		         data        - 
-                               api-version.ts (Interface)
-                               user.ts (class)
-                 api-version -
-                               api-version.component.css
-                               api-version.component.html
-                               api-version.component.spec.ts
-                               api-version.component.ts
-		         user        -
-			                   Create-User -                                
-                                             create-user.component.css
-                                             create-user.component.html
-                                             create-user.component.spec.ts
-                                             create-user.component.ts
-			                   Update-User -
-                                             update-user.component.css
-                                             update-user.component.html
-                                             update-user.component.spec.ts
-                                             update-user.component.ts
-                ...
-    ...
+## Folder structure
+The project will be structured this way: (folders will be in lowercase, but are in Uppercase here to better view the structure)<br/>
+<b>Src</b><br/>
+_____________________________________<b>Assets</b>______<br/>
+_______________________________<b>Environments</b><br/>
+________________________________________<b>App</b>_________<br/>
+_______________________________<b>Services</b><br/>
+_________________________________________api-version.service.ts<br/>
+__________________________________________user.service.ts<br/>
+__________________________________<b>Data</b>____<br/>
+_________________________________________api-version.ts (Interface)<br/>
+_________________________________________user.ts (class)<br/>
+_____________________________<b>Api-version</b><br/>
+_________________________________________api-version.component.css<br/>
+_________________________________________api-version.component.html<br/>
+_________________________________________api-version.component.spec.ts<br/>
+_________________________________________api-version.component.ts<br/>
+__________________________________________<b>User</b>_______<br/>
+__________________________________________<b>Create-User</b><br/>                              
+_____________________________________________________________create-user.component.css<br/>
+_____________________________________________________________create-user.component.html<br/>
+_____________________________________________________________create-user.component.spec.ts<br/>
+_____________________________________________________________create-user.component.ts<br/>
+__________________________________________<b>Update-User</b><br/>
+_____________________________________________________________update-user.component.css<br/>
+_____________________________________________________________update-user.component.html<br/>
+_____________________________________________________________update-user.component.spec.ts<br/>
+_____________________________________________________________update-user.component.ts<br/>
 
-# Client
+## Client
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.12.
 
