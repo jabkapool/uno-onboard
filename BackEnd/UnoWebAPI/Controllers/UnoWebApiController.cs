@@ -5,8 +5,7 @@ using Microsoft.Data.SqlClient;
 
 namespace UnoWebAPI.Controllers {
 
-    //[Authorize(Roles = "Admin, User")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin, User")]
     [Route("api/[controller]")]
     [ApiController]
     public class UnoWebApiController: ControllerBase {
