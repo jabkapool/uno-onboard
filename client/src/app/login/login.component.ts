@@ -25,13 +25,13 @@ export class LoginComponent implements OnDestroy {
   }
 
   /**
-   * @remarks Error handling comes from backend, so there's really no need to error handle here. 
-   *          The only advantage (which can be important; we can always check both in the backend and frontend in case user disables javascript in browser)
-   *          is not wasting time and resources checking in backend if some validation is made by typescript/javascript.
+   * @remarks Error handling comes from backend, hence the responses come from the try-catch blocks in error:(error) => { ... }
+   *          Backend checking is always better than frontend checking because the user can always disable javascript in the browser.
+   *          The best of the worlds is checking both in backend and frontend, because checking in frontend by typescript/javascript is faster than checking in backend.
    *  - if the email is left blanck, the backend will return an error message: "Email is required."
    *  - if the password is left blanck, the backend will return an error message: "Password is required."
-   *  - Other checks the backend does in the third catch block.
-   *      - Invalid Email (format)
+   *  - Other checks the backend does in the 3rd try catch block.
+   *      - User not found
    *      - Invalid Password
    * 
    *  If login succeeds, user is redirected to the home page. The Api Version page (for now).
@@ -46,7 +46,6 @@ export class LoginComponent implements OnDestroy {
           this.goToHomePage(); 
         },
         error: (error) => {
-          console.log("entra aqui");
           this.errorFlag = true;
           try {
             this.errorMessage = error.error.errors.Email[0] as string; 
