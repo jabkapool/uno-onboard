@@ -32,7 +32,6 @@ export class ApiVersionComponent implements OnInit, OnDestroy {
    * Use for any custom cleanup that needs to occur when the instance is destroyed.
    * Used to unsubscribe from the getApiVersion observable.
    */
-
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

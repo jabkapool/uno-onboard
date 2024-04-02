@@ -104,7 +104,8 @@ namespace UnoWebAPI.Controllers {
                 if(status == 0) {
                     return BadRequest(message);
                 }
-                return Ok(message);
+                Response.Cookies.Append("X-Access-Token", "Bearer " + message, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                return Ok();
             }
             catch(Exception ex) {
                 _logger.LogError(ex.Message);
