@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { ApiVersionComponent } from './api-version/api-version.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './data/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { LoginComponent } from './login/login.component';
     NgbModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

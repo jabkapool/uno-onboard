@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -9,11 +9,11 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   email: string = '';
   password: string = '';
-  errorFlag:boolean = false;
-  errorMessage:string = '';
+  errorFlag: boolean = false;
+  errorMessage: string = '';
   private unsubscribe$ = new Subject<void>();
 
   constructor(private loginService:LoginService, private router:Router){
@@ -41,8 +41,12 @@ export class LoginComponent {
     this.loginService.login(this.email, this.password)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (data: any) => { this.goToHomePage(); },
+        next: (res: any) => {          
+          this.loginService.storeToken(res.token);
+          this.goToHomePage(); 
+        },
         error: (error) => {
+          console.log("entra aqui");
           this.errorFlag = true;
           try {
             this.errorMessage = error.error.errors.Email[0] as string; 
@@ -57,11 +61,11 @@ export class LoginComponent {
           catch {}
 
           try {
-            this.errorMessage = error.error as string;
+            this.errorMessage = error.error.loginFailureReason as string;
             return;
           }
           catch {}
-      }
+        }
     });  
   }
 

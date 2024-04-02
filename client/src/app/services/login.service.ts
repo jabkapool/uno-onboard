@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  public readonly loginUrl = 'https://localhost:7211/api/User/Login';
+  private readonly baseUrl = 'https://localhost:7211/api/User/Login';
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +18,19 @@ export class LoginService {
    */
   login(email: string, password: string): Observable<any> {
     const body = { email: email, password: password };
-    return this.http.post(this.loginUrl, body);
+    return this.http.post(this.baseUrl, body);
+  }
+
+  storeToken(tokenValue: string) {
+    sessionStorage.setItem('token', tokenValue);
+  }
+
+  getToken() {
+    return sessionStorage.getItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    return !!sessionStorage.getItem('token');
   }
   
 }
