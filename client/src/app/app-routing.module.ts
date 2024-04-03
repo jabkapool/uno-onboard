@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { ApiVersionComponent } from './api-version/api-version.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'apiversion', component: ApiVersionComponent} 
+  { path: 'login', loadChildren: () => import('./login/login-routing.module').then(m => m.LoginRoutingModule)},
+  { path: 'apiversion', loadChildren: () => import('./api-version/api-version-routing.module').then(m => m.ApiVersionRoutingModule)}
 ];
 
 @NgModule({
