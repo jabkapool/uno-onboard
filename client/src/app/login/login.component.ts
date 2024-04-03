@@ -64,6 +64,12 @@ export class LoginComponent implements OnDestroy {
             return;
           }
           catch {}
+          
+          try { //In case there is an error and all previous reasons did not apply.
+            this.errorMessage = "The system is experiencing technical difficulties. Please try again later.";
+            return;
+          }
+          catch {}
         }
     });  
   }

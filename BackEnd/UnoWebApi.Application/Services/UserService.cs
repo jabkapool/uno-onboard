@@ -137,7 +137,7 @@ namespace UnoWebApi.Application.Services {
             loginResult.IsLoginSuccessful = true;
             loginResult.UserName = user.Name;
             loginResult.Token = token;
-            loginResult.Expiration = DateTime.Now.AddMinutes(50).ToString(CultureInfo.InvariantCulture);
+            loginResult.Expiration = DateTime.Now.AddMinutes(50).ToString("o",CultureInfo.InvariantCulture);
             loginResult.Role = userRoles.FirstOrDefault();
 
             return (1, loginResult);
