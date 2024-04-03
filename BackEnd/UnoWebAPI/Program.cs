@@ -24,11 +24,12 @@ namespace UnoWebAPI {
             app.UseSwagger();
             app.UseSwaggerUI();
 
+            app.UseCors(myAllowSpecificOrigins);
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
 
-            app.UseCors(myAllowSpecificOrigins);
             app.MapControllers();
             app.Run();
         }

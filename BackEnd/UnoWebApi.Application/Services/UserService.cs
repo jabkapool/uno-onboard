@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -106,15 +107,18 @@ namespace UnoWebApi.Application.Services {
         /// <summary>
         /// Service to login a user from controller  "Login"
         /// </summary>
-        public async Task<(int, string)> Login(Login model) {
+        public async Task<(int, LoginResult)> Login(Login model) {
 
             ApplicationUser? user = await _userManager.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
-
+            LoginResult loginResult = new();
+          
             if(user == null) {
-                return (0, "Invalid Email");
+                loginResult.LoginFailureReason = "User does not exist in the system";
+                return (0, loginResult);
             }
             if(!await _userManager.CheckPasswordAsync(user, model.Password!)) {
-                return (0, "Invalid Password");
+                loginResult.LoginFailureReason = "Invalid Password";
+                return (0, loginResult);
             }
 
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
@@ -128,7 +132,15 @@ namespace UnoWebApi.Application.Services {
             }
 
             string token = TokenHelper.GenerateJwtToken(authClaims, _configuration);
-            return (1, token);
+
+            loginResult.UserId = user.Id;
+            loginResult.IsLoginSuccessful = true;
+            loginResult.UserName = user.Name;
+            loginResult.Token = token;
+            loginResult.Expiration = DateTime.Now.AddMinutes(50).ToString("o",CultureInfo.InvariantCulture);
+            loginResult.Role = userRoles.FirstOrDefault();
+
+            return (1, loginResult);
         }
         
         /// <summary>

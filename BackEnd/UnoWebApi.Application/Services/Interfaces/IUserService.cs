@@ -7,7 +7,7 @@ namespace UnoWebApi.Application.Services.Interfaces {
         Task<ApplicationUser?> GetUserByIdAsync(Guid id);
         Task<IEnumerable<ApplicationUser?>> GetUserByNameAsync(string name);
         Task<(int, string)> Registration(Registration model);
-        Task<(int, string)> Login(Login model);
+        Task<(int, LoginResult)> Login(Login model);
         Task<ApplicationUser?> UpdateUserAsync(ApplicationUser user);
         Task<ApplicationUser?> DeleteUserByIdAsync(Guid id);
     }

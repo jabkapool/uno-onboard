@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 leftSide">      
+      <img src="/assets/pictures/loginImage.jpg" alt="loginImage" class="loginImage"> 
+    </div>
+    <div class="col-md-6 rightSide">     
+      <div class="login-form">
+        <img src="/assets/pictures/Uno.png" alt="UnoImage" class="unoImage">    
+      <p class="title">Welcome!</p>
+        <p class="subtitle">Enter your credentials to access your account.</p>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input id="email" type="text" class="form-rounded" formControlName="email">
+            <div *ngIf="loginForm.controls.email.invalid">Email is invalid</div>
+            <div *ngIf="loginForm.controls.email.errors?.['required']">Email is required.</div>
+            <br/>
+            <label for="password">Password:</label>
+            <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-rounded" formControlName="password" (click)="tooglePasswordVisibility()">
+            <div *ngIf="loginForm.controls.password.errors?.['required']">Password is required.</div>
+            <div *ngIf="loginForm.controls.password.errors?.['minLength']">Password must be at least 8 characters long.</div>
+            <br/>
+            <p class="forgot"><a href="#">forgot my password</a></p>            
+            <button type="submit">Enter</button>
+          </div> 
+        </form>
+        <div *ngIf="errorFlag" class="errorMessage">
+          {{errorMessage}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

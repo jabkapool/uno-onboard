@@ -100,11 +100,11 @@ namespace UnoWebAPI.Controllers {
                 if(!ModelState.IsValid) {
                     return BadRequest("Invalid payload!");
                 }
-                (int status, string message) = await _userService.Login(model);
+                (int status, LoginResult loginResult) = await _userService.Login(model);
                 if(status == 0) {
-                    return BadRequest(message);
+                    return BadRequest(loginResult);
                 }
-                return Ok(message);
+                return Ok(loginResult);
             }
             catch(Exception ex) {
                 _logger.LogError(ex.Message);
