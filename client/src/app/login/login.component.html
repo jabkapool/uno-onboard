@@ -16,7 +16,7 @@
             <div *ngIf="loginForm.controls.email.errors?.['required']">Email is required.</div>
             <br/>
             <label for="password">Password:</label>
-            <input id="password" type="{{showPassword ? 'text' : 'password'}}" class="form-rounded" formControlName="password" (click)="tooglePasswordVisibility()">
+            <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-rounded" formControlName="password" (click)="tooglePasswordVisibility()">
             <div *ngIf="loginForm.controls.password.errors?.['required']">Password is required.</div>
             <div *ngIf="loginForm.controls.password.errors?.['minLength']">Password must be at least 8 characters long.</div>
             <br/>
