@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -10,11 +11,14 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnDestroy {
-  email: string = '';
-  password: string = '';
   errorFlag: boolean = false;
   errorMessage: string = '';
   private unsubscribe$ = new Subject<void>();
+  loginForm = new FormGroup({
+    email: new FormControl('username@mail.com', [Validators.required]),
+    password: new FormControl('Insert your password', [Validators.required, Validators.minLength(8)]),
+  });
+  showPassword: boolean = true;
 
   constructor(private loginService:LoginService, private router:Router){
   }
@@ -38,7 +42,7 @@ export class LoginComponent implements OnDestroy {
    * @returns void
    */
   onSubmit(): void {
-    this.loginService.login(this.email, this.password)
+    this.loginService.login(this.getEmail(), this.getPassword())
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (res: any) => {          
@@ -72,6 +76,19 @@ export class LoginComponent implements OnDestroy {
           catch {}
         }
     });  
+  }
+
+  getEmail(): string {
+    return this.loginForm.get('email')?.value as string;
+  }
+
+  getPassword(): string {
+    return this.loginForm.get('password')?.value as string;
+  }
+
+  tooglePasswordVisibility(): void {
+    this.loginForm.get('password')?.setValue('');
+    this.showPassword = !this.showPassword;
   }
 
   /**
