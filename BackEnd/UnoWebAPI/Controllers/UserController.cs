@@ -101,9 +101,12 @@ namespace UnoWebAPI.Controllers {
                     return BadRequest("Invalid payload!");
                 }
                 (int status, LoginResult loginResult) = await _userService.Login(model);
-                (int refreshTokenStatus, RefreshTokens? refreshTokens) = await _userService.CreateRefreshToken(model.Email!);
-                if(status == 0 || refreshTokenStatus == 0) {
+                if(status == 0) {
                     return BadRequest(loginResult);
+                }
+                (int refreshTokenStatus, RefreshTokens? refreshTokens) = await _userService.CreateRefreshToken(model.Email!);
+                if (refreshTokenStatus == 0) {
+                    return BadRequest("Failed to create refresh token!");
                 }
                 return Ok(loginResult);
               
