@@ -104,9 +104,39 @@ namespace UnoWebAPI.Controllers {
                 if(status == 0) {
                     return BadRequest(loginResult);
                 }
+                (int refreshTokenStatus, _) = await _userService.CreateRefreshToken(model.Email!);
+                if (refreshTokenStatus == 0) {
+                    return BadRequest("Failed to create refresh token!");
+                }
                 return Ok(loginResult);
+              
             }
             catch(Exception ex) {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Http method to change user's password.
+        /// </summary>
+        /// <param name="email">The user email.</param>
+        /// <returns>Ok 200 on success, otherwise Error http 40x</returns>
+        [AllowAnonymous]
+        [HttpPut("PasswordRecovery")]
+        public async Task<IActionResult> PasswordRecovery(string email) {
+
+            try {
+                if (!EmailHelper.IsEmailValid(email)) {
+                    return BadRequest("Invalid email address!");
+                }
+                (int status, string message) = await _userService.PasswordRecoveryAsync(email);
+                if (status == 0) {
+                    return BadRequest(message);
+                }
+                return Ok(message);
+            }
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -162,6 +192,20 @@ namespace UnoWebAPI.Controllers {
                 _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        ///<summary>
+        /// Logout user from the application
+        ///</summary>
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost]
+        public async Task<IActionResult> Logoff(RefreshTokens refreshToken) {
+            bool logOutUser = await _userService.UserLogout(refreshToken);
+            if (!logOutUser)
+            {
+                return BadRequest("Failed logging out the user!");
+            }
+            return Ok("User logged out successfully!");
         }
     }
 }

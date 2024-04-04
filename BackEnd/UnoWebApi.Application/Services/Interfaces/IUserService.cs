@@ -8,7 +8,10 @@ namespace UnoWebApi.Application.Services.Interfaces {
         Task<IEnumerable<ApplicationUser?>> GetUserByNameAsync(string name);
         Task<(int, string)> Registration(Registration model);
         Task<(int, LoginResult)> Login(Login model);
+        Task<(int, RefreshTokens?)> CreateRefreshToken(string email);
+        Task<(int, string)>PasswordRecoveryAsync(string email);
         Task<ApplicationUser?> UpdateUserAsync(ApplicationUser user);
         Task<ApplicationUser?> DeleteUserByIdAsync(Guid id);
+        Task<bool> UserLogout(RefreshTokens token);
     }
 }
