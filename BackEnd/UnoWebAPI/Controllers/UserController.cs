@@ -104,7 +104,7 @@ namespace UnoWebAPI.Controllers {
                 if(status == 0) {
                     return BadRequest(loginResult);
                 }
-                (int refreshTokenStatus, RefreshTokens? refreshTokens) = await _userService.CreateRefreshToken(model.Email!);
+                (int refreshTokenStatus, _) = await _userService.CreateRefreshToken(model.Email!);
                 if (refreshTokenStatus == 0) {
                     return BadRequest("Failed to create refresh token!");
                 }
