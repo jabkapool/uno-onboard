@@ -9,19 +9,23 @@ using UnoWebApi.Application.Helpers;
 using UnoWebApi.Application.Services.Interfaces;
 using UnoWebApi.Domain.Entities;
 using UnoWebApi.Domain.Models;
+using UnoWebApi.Infrastructure.Context.Interfaces;
 
 namespace UnoWebApi.Application.Services {
     public class UserService: IUserService {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly IUnoDbContext _context;
         public UserService(UserManager<ApplicationUser> userManager,
                            RoleManager<IdentityRole<Guid>> roleManager,
-                           IConfiguration configuration) {
+                           IConfiguration configuration,
+                           IUnoDbContext dbContext) {
 
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _context = dbContext;
         }
 
         /// <summary>
@@ -105,11 +109,11 @@ namespace UnoWebApi.Application.Services {
         }
 
         /// <summary>
-        /// Service to login a user from controller  "Login"
+        /// Service to log in a user from controller  "Login"
         /// </summary>
         public async Task<(int, LoginResult)> Login(Login model) {
 
-            ApplicationUser? user = await _userManager.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
+            ApplicationUser? user = await _userManager.FindByEmailAsync(model.Email!);
             LoginResult loginResult = new();
           
             if(user == null) {
@@ -139,10 +143,50 @@ namespace UnoWebApi.Application.Services {
             loginResult.Token = token;
             loginResult.Expiration = DateTime.Now.AddMinutes(50).ToString("o",CultureInfo.InvariantCulture);
             loginResult.Role = userRoles.FirstOrDefault();
-
+            
             return (1, loginResult);
         }
-        
+
+        /// <summary>
+        /// Service to create a refresh token from controller and store it in the database from controller  "Login"
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task<(int, RefreshTokens?)> CreateRefreshToken(string email) {
+
+            ApplicationUser? user = await _userManager.FindByEmailAsync(email);
+            if (user == null) {
+                return (0, null);
+            }
+            RefreshTokens refreshToken = TokenHelper.GenerateRefreshToken(user.Id);
+            await _context.RefreshTokens.AddAsync(refreshToken);
+            await _context.SaveChangesAsync();
+            return (1, refreshToken);
+        }
+
+        /// <summary>
+        /// Service to recover User Password from controller  "PasswordRecovery"
+        /// </summary>
+        public async Task<(int, string)> PasswordRecoveryAsync(string email) {
+
+            ApplicationUser? user = await _userManager.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            if(user == null) {
+                return (0, "User does not exist!");
+            }
+            string newPassword = GenericHelper.GenerateRandomPassword();
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+            if (result.Succeeded) {
+               EmailHelper.SendEmail(user.Email!, "Uno-Onboard Password Recovery",
+                                      $"Hello {user.Name} your password has been changed. This is your new password:\n\n" +
+                                                         $"Password: {newPassword}\n");
+               return (1, $"The password has been changed successfully and sent to your email address: {user.Email}");
+            }
+
+            return (0, "Password could not be changed. Please try again!");
+        }
+
         /// <summary>
         /// Service to update a user from controller  "UpdateUser"
         /// </summary>
@@ -166,6 +210,25 @@ namespace UnoWebApi.Application.Services {
             }
             IdentityResult result = await _userManager.DeleteAsync(user);
             return !result.Succeeded ? null : user;
+        }
+
+        /// <summary>
+        /// Service to log out user from the system from controller  "LogOff"
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task<bool> UserLogout(RefreshTokens token) {
+
+            RefreshTokens? refreshToken = await _context.RefreshTokens.Where(rt => rt.Id == token.Id).FirstOrDefaultAsync();
+            if (refreshToken == null) {
+                return false;
+            }
+            
+            refreshToken.Revoked = true;
+            refreshToken.UpdatedAt = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
+            _context.RefreshTokens.Update(refreshToken);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
