@@ -1,0 +1,85 @@
+.sideBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70px;
+    height: 963px;
+    background-color: #0902D4;
+    padding: 10px;
+    z-index: 1000;
+    transition: all 0.3s;
+}
+
+
+.uno-logo {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    display: block;
+
+}
+
+.home {
+    margin-top: 100px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s;
+}
+
+.dashboards {
+    margin-top: 20px;
+    padding: 0px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s;
+
+}
+
+.sensors {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s;
+
+}
+
+.users {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s;
+
+}
+
+.settings {
+    margin-top: 200px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s;
+
+}
+
+.logout {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s;
+
+}

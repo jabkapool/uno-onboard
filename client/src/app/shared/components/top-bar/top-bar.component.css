@@ -1,0 +1,19 @@
+.top-bar {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    height: 75px;
+    margin-left: 58px;
+}
+
+.display-message {
+    padding-top: 20px;
+    margin-left: 50px;  
+    text-align: left;
+    color: #000000;
+    text-decoration: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: large;
+    font-weight: bold;
+    display: block;
+    transition: all 0.3s;
+}

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoginService } from '../services/login.service';
+import { LoginService } from '../../../services/login.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -45,15 +45,16 @@ export class LoginComponent implements OnDestroy {
     this.loginService.login(this.getEmail(), this.getPassword())
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (res: any) => {          
+        next: (res: any) => {
           this.loginService.storeToken(res.token);
+          this.loginService.storeUserName(res.userName);
           this.goToHomePage(); 
         },
         error: (error) => {
           this.errorFlag = true;
           try {
             this.errorMessage = error.error.errors.Email[0] as string; 
-            return;    
+            return;
           }
           catch {}
 
@@ -75,7 +76,7 @@ export class LoginComponent implements OnDestroy {
           }
           catch {}
         }
-    });  
+    });
   }
 
   getEmail(): string {
@@ -97,6 +98,6 @@ export class LoginComponent implements OnDestroy {
    * @returns void
    */
   goToHomePage(): void{   
-      this.router.navigate(['/apiversion']);
+      this.router.navigate(['/homepage']);
   }
 }

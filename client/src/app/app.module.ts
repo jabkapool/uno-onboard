@@ -6,15 +6,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ApiVersionComponent } from './api-version/api-version.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './shared/components/login/login.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './data/auth-interceptor';
+import { SideBarComponent } from './shared/components/side-bar/side-bar.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { TopBarComponent } from './shared/components/top-bar/top-bar.component';
+import { DashboardsComponent } from './shared/components/dashboards/dashboards.component';
+import { SensorsComponent } from './shared/components/sensors/sensors.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ApiVersionComponent,
-    LoginComponent
+    LoginComponent,
+    SideBarComponent,
+    HomePageComponent,
+    TopBarComponent,
+    DashboardsComponent,
+    SensorsComponent
   ],
   imports: [
     BrowserModule,
