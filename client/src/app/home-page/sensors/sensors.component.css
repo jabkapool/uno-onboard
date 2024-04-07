@@ -1,14 +1,15 @@
-.top-bar {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
-    height: 75px;
+.sensors-container {
+    height: 415px;
+    padding: 1px;
     margin-left: 58px;
+    border: #000000;
+    border-style: solid;
 }
 
-.display-message {
-    padding-top: 20px;
+.sensors-text {
+    margin-top: 100px;
     margin-left: 50px;  
-    text-align: left;
+    text-align: center;
     color: #000000;
     text-decoration: none;
     font-family: 'Courier New', Courier, monospace;

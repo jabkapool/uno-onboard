@@ -98,6 +98,6 @@ export class LoginComponent implements OnDestroy {
    * @returns void
    */
   goToHomePage(): void{
-    this.router.navigate(['/apiversion']);
+    this.router.navigate(['/homepage']);
   }
 }

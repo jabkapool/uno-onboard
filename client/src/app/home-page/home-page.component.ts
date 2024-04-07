@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HomePageService } from '../services/home-page.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -10,9 +10,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
-  
-  constructor(private homePageService: HomePageService){
-  }
+
+  constructor(private homePageService: HomePageService) { }
 
   ngOnInit(): void {
     this.getWelcomeMessage();
@@ -27,8 +26,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.homePageService.getHomePage()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (req: any) => {req;},
-        error: (error: any) => {console.log(error)}
+        next: (response: any) => { console.log(response);},
+        error: (error: any) => { console.log(error);}
       });
   }
 }

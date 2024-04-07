@@ -1,12 +1,13 @@
-.sensors-container {
-    height: 415px;
+.dashboards-container {
+    height: 420px;
     padding: 1px;
-    margin-left: 58px;
+    background-color: #E9ECF1;
+    margin: 0px 0px 0px 58px;
     border: #000000;
     border-style: solid;
 }
 
-.sensors-text {
+.dashboards-text {
     margin-top: 100px;
     margin-left: 50px;  
     text-align: center;

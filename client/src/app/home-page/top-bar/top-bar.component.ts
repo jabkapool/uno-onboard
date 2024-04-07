@@ -11,5 +11,5 @@ export class TopBarComponent implements OnInit {
   ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
+
 }
- 

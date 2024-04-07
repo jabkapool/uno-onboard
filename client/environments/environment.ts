@@ -4,6 +4,6 @@ export const environment = {
     services : {
         homePage: 'https://localhost:7211/api/UnoWebApi/HomePage',
         apiVersion: 'https://localhost:7211/api/UnoWebApi/Version',
-        login: 'https://localhost:7211/api/User/Login',       
+        login: 'https://localhost:7211/api/User/Login',
     }
 }
