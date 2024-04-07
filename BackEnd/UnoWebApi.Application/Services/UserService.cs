@@ -169,7 +169,7 @@ namespace UnoWebApi.Application.Services {
         /// </summary>
         public async Task<(int, string)> PasswordRecoveryAsync(string email) {
 
-            ApplicationUser? user = await _userManager.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            ApplicationUser? user = await _userManager.FindByEmailAsync(email);
             if(user == null) {
                 return (0, "User does not exist!");
             }

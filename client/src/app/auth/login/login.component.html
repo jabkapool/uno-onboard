@@ -19,7 +19,7 @@
                         <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-rounded" formControlName="password" (click)="tooglePasswordVisibility()">
                         <div *ngIf="loginForm.controls.password.errors?.['required']">Password is required.</div>
                         <div *ngIf="loginForm.controls.password.errors?.['minLength']">Password must be at least 8 characters long.</div>
-                        <p class="forgot"><a href="#">forgot my password</a></p>
+                        <p class="forgot"><a [routerLink]="'/passwordrecovery'">forgot my password</a></p>
                         <button type="submit">Enter</button>
                     </div>
                     <div *ngIf="errorFlag" class="errorMessage">

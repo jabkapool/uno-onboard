@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ApiVersionComponent } from './api-version/api-version.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/auth', pathMatch: 'full' },
-  { path: 'apiversion', loadChildren: () => import('./api-version/api-version-routing.module').then(m => m.ApiVersionRoutingModule)},
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'homepage', loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule) },
-  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) }
+  { path: 'login', loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule) },
+  { path: 'passwordrecovery', loadChildren: () => import('./auth/password-recovery/password-recovery.module').then(m => m.PasswordRecoveryModule) }
 ];
 
 @NgModule({
