@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoginService } from '../../../services/login.service';
+import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,12 +15,12 @@ export class LoginComponent implements OnDestroy {
   errorMessage: string = '';
   private unsubscribe$ = new Subject<void>();
   loginForm = new FormGroup({
-    email: new FormControl('username@mail.com', [Validators.required]),
-    password: new FormControl('Insert your password', [Validators.required, Validators.minLength(8)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required])
   });
   showPassword: boolean = true;
 
-  constructor(private loginService:LoginService, private router:Router){
+  constructor(private loginService: LoginService, private router: Router){
   }
 
   ngOnDestroy(): void {
@@ -93,11 +93,11 @@ export class LoginComponent implements OnDestroy {
   }
 
   /**
-   * @remarks Redirects to the temporary home page (Api Version page)
+   * @remarks After login success, navigate to home page
    * @param None
    * @returns void
    */
-  goToHomePage(): void{   
-      this.router.navigate(['/homepage']);
+  goToHomePage(): void{
+    this.router.navigate(['/apiversion']);
   }
 }
