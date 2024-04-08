@@ -50,6 +50,31 @@ namespace UnoWebApi.Application.Services {
         }
 
         /// <summary>
+        /// Service to list users from controller  "ListUsers"
+        /// </summary>
+        /// <param name="searchQuery">The term to search users</param>
+        /// <param name="orderBy">Order by Name or Email; default order by Name</param>
+        /// <param name="direction">Order Ascending or Descending; Default order Ascending</param>
+        /// <returns>A list of users ordered</returns>
+        public async Task<IEnumerable<ApplicationUser?>?> ListUsersAsync(string searchQuery, string orderBy, int direction) {
+
+            string normalizedString = GenericHelper.RemoveDiacritics(searchQuery);
+            IEnumerable<ApplicationUser?> users = await _userManager.Users.Where(u => u.Name!.Contains(normalizedString) ||
+                    u.UserName!.Contains(normalizedString) ||
+                    u.Email!.Contains(normalizedString))
+                .ToListAsync();
+            if(users.IsNullOrEmpty()) {
+                return null;
+            }
+            users = orderBy switch {
+                "Name" => direction == 0 ? users.OrderBy(u => u!.Name) : users.OrderByDescending(u => u!.Name),
+                "Email" => direction == 0 ? users.OrderBy(u => u!.Email) : users.OrderByDescending(u => u!.Email),
+                _ => users
+            };
+            return users;
+        }
+
+        /// <summary>
         /// Service to get a user by its name from controller  "GetUserByName"
         /// </summary>
         public async Task<IEnumerable<ApplicationUser?>> GetUserByNameAsync(string name) {

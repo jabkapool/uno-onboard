@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit, OnDestroy {
+  public displayUsers:boolean = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(private homePageService: HomePageService) { }
@@ -29,5 +30,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
         next: (response: any) => { console.log(response);},
         error: (error: any) => { console.log(error);}
       });
+  }
+
+  toogleShowUsers(showUsers: boolean): void {
+    this.displayUsers = showUsers;
   }
 }

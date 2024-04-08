@@ -46,6 +46,23 @@ namespace UnoWebAPI.Controllers {
             return Ok(user);
         }
 
+         /// <summary>
+        /// Filter users by name or email.
+        /// <param name="searchQuery">The query to search users in columns Name and Email</param>
+        /// <param name="orderBy">Order by Name or Email</param>
+        /// <param name="direction">0 for ascending, 1 for descending</param>
+        /// <returns>A list of ordered users.</returns>
+        /// </summary>
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("ListUsers")]
+        public async Task<ActionResult<IEnumerable<ApplicationUser>>> ListUsers(string searchQuery, string orderBy = "Name", int direction = 0) {
+            IEnumerable<ApplicationUser?>? users = await _userService.ListUsersAsync(searchQuery, orderBy, direction);
+            if(users == null) {
+                return NotFound("No users found!");
+            }
+            return Ok(users);
+        }
+
         /// <summary>
         /// Http method to get a user by its name.
         /// </summary>
