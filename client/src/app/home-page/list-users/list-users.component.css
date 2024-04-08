@@ -1,0 +1,41 @@
+.container-fluid {
+    height: 415px;
+    padding: 1px;
+    margin-left: 58px;
+}
+
+.search {
+    /*display: inline;*/
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    width:500px;
+}
+
+.form-control {
+    display: inline;
+    width: 300px;
+}
+
+button {
+    display: inline;
+    align-items: left;
+    background-color: #007bff;
+    color: #fff; 
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 4px;
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100px;
+    height: 35px; 
+    margin-left:20px;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}

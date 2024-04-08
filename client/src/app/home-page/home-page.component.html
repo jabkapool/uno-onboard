@@ -1,13 +1,17 @@
 <div class="container-fluid">
-    <div class="row">
-      <div>
-        <app-side-bar></app-side-bar>
-      </div>
-      <div class="col-md-12">
-        <app-top-bar></app-top-bar>
+  <div class="row">
+    <div>
+      <app-side-bar (newItemEvent)="toogleShowUsers(true)"></app-side-bar>
+    </div>
+    <div class="col-md-12">
+      <app-top-bar></app-top-bar>
+      <div *ngIf="!displayUsers">
         <app-dashboards></app-dashboards>
         <app-sensors></app-sensors>
       </div>
+      <div *ngIf="displayUsers">
+        <app-list-users></app-list-users>
     </div>
   </div>
+</div>
 <router-outlet></router-outlet>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-side-bar',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent {
+  @Output()
+  newItemEvent = new EventEmitter<string>();
 
+  showUsers(value: string) {
+    this.newItemEvent.emit(value);
+  }
 }
