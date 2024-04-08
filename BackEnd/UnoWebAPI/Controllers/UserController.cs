@@ -120,21 +120,21 @@ namespace UnoWebAPI.Controllers {
         /// <summary>
         /// Http method to change user's password.
         /// </summary>
-        /// <param name="email">The user email.</param>
+        /// <param name="user">The user email.</param>
         /// <returns>Ok 200 on success, otherwise Error http 40x</returns>
         [AllowAnonymous]
         [HttpPut("PasswordRecovery")]
-        public async Task<IActionResult> PasswordRecovery(string email) {
+        public async Task<IActionResult> PasswordRecovery([FromBody] PasswordRecovery user) {
 
             try {
-                if (!EmailHelper.IsEmailValid(email)) {
+                if (!EmailHelper.IsEmailValid(user.Email!)) {
                     return BadRequest("Invalid email address!");
                 }
-                (int status, string message) = await _userService.PasswordRecoveryAsync(email);
+                (int status, string message) = await _userService.PasswordRecoveryAsync(user.Email!);
                 if (status == 0) {
                     return BadRequest(message);
                 }
-                return Ok(message);
+                return Ok(new {OkMessage = message});
             }
             catch (Exception ex) {
                 _logger.LogError(ex.Message);

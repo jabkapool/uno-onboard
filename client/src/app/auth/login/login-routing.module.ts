@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApiVersionComponent } from './api-version.component';
+import { LoginComponent } from './login.component';
 
-const routes: Routes = [ { path: '', component: ApiVersionComponent }];
+const routes: Routes = [{ path: '', component: LoginComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ApiVersionRoutingModule { }
+export class LoginRoutingModule { }

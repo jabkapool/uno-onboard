@@ -32,5 +32,9 @@ export class LoginService {
   isLoggedIn(): boolean {
     return !!sessionStorage.getItem('token');
   }
+
+  storeUserName(userName: string) {
+    sessionStorage.setItem('userName', userName);
+  }
   
 }

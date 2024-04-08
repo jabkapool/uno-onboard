@@ -44,5 +44,13 @@ namespace UnoWebAPI.Controllers {
                 return StatusCode(500, ex.Message);
             }
         }
+
+        /// <summary>
+        /// Default Http Get method for Homepage.
+        /// </summary>
+        [HttpGet("HomePage")]
+        public ActionResult HomePage() {
+            return Ok(new { Message = "Welcome to Uno Web API" });
+        }
     }
 }
