@@ -2,6 +2,7 @@
 
 namespace UnoWebApi.Domain.Entities {
     public class ApplicationUser : IdentityUser<Guid> {
+
         /// <summary>
         /// The Name of the User in the System.
         /// </summary>
@@ -11,5 +12,10 @@ namespace UnoWebApi.Domain.Entities {
         /// The Picture of the User in the system.
         /// </summary>
         public byte[]? Picture { get; set; }
+
+        /// <summary>
+        /// Navigation Property for the Sensors marked as favourite.
+        /// </summary>
+        public virtual ICollection<FavouriteSensor>? FavouriteSensors { get; set; }
     }
 }
