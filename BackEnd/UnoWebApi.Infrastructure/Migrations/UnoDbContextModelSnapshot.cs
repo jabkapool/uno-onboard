@@ -225,6 +225,33 @@ namespace UnoWebApi.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("UnoWebApi.Domain.Entities.FavouriteSensor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SensorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SensorsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SensorsId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("FavouriteSensors");
+                });
+
             modelBuilder.Entity("UnoWebApi.Domain.Entities.RefreshTokens", b =>
                 {
                     b.Property<int>("Id")
@@ -256,6 +283,59 @@ namespace UnoWebApi.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("UnoWebApi.Domain.Entities.SensorData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("NumericValues")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("SensorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SensorId");
+
+                    b.ToTable("SensorsData");
+                });
+
+            modelBuilder.Entity("UnoWebApi.Domain.Entities.Sensors", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Sensors");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -309,6 +389,21 @@ namespace UnoWebApi.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("UnoWebApi.Domain.Entities.FavouriteSensor", b =>
+                {
+                    b.HasOne("UnoWebApi.Domain.Entities.Sensors", "Sensors")
+                        .WithMany("FavouriteSensors")
+                        .HasForeignKey("SensorsId");
+
+                    b.HasOne("UnoWebApi.Domain.Entities.ApplicationUser", "Users")
+                        .WithMany("FavouriteSensors")
+                        .HasForeignKey("UsersId");
+
+                    b.Navigation("Sensors");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("UnoWebApi.Domain.Entities.RefreshTokens", b =>
                 {
                     b.HasOne("UnoWebApi.Domain.Entities.ApplicationUser", "User")
@@ -318,6 +413,40 @@ namespace UnoWebApi.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UnoWebApi.Domain.Entities.SensorData", b =>
+                {
+                    b.HasOne("UnoWebApi.Domain.Entities.Sensors", "Sensor")
+                        .WithMany("SensorsData")
+                        .HasForeignKey("SensorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sensor");
+                });
+
+            modelBuilder.Entity("UnoWebApi.Domain.Entities.Sensors", b =>
+                {
+                    b.HasOne("UnoWebApi.Domain.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UnoWebApi.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("FavouriteSensors");
+                });
+
+            modelBuilder.Entity("UnoWebApi.Domain.Entities.Sensors", b =>
+                {
+                    b.Navigation("FavouriteSensors");
+
+                    b.Navigation("SensorsData");
                 });
 #pragma warning restore 612, 618
         }

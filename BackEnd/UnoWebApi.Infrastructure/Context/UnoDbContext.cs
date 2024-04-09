@@ -12,5 +12,8 @@ namespace UnoWebApi.Infrastructure.Context {
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<RefreshTokens> RefreshTokens { get; set; }
+        public DbSet<Sensors> Sensors { get; set; }
+        public DbSet<SensorData> SensorsData { get; set; }
+        public DbSet<FavouriteSensor> FavouriteSensors { get; set; }
     }
 }
