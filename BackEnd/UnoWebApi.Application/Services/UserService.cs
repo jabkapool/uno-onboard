@@ -152,7 +152,7 @@ namespace UnoWebApi.Application.Services {
 
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
             List<Claim> authClaims = new List<Claim> {
-                new Claim(ClaimTypes.Name, user.Name!),
+                new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) //Unique identifier for the token - openid connect core StandardClaims
             };
 
