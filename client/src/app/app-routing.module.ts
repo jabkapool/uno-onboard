@@ -3,10 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { ApiVersionComponent } from './api-version/api-version.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'homepage', loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule) },
-  { path: 'login', loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule) },
-  { path: 'passwordrecovery', loadChildren: () => import('./auth/password-recovery/password-recovery.module').then(m => m.PasswordRecoveryModule) }
+  {
+    path: '',
+    //redirectTo: 'homepage', //change to this when canactiveatecanActivate: [], in auth.routing.ts is working
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
 ];
 
 @NgModule({

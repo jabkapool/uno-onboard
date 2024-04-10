@@ -10,13 +10,14 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './password-recovery.component.html',
   styleUrls: ['./password-recovery.component.css']
 })
-export class PasswordRecoveryComponent implements OnDestroy{
+export class PasswordRecoveryComponent implements OnDestroy {
   errorFlag: boolean = false;
   errorMessage: string = '';
-  private unsubscribe$ = new Subject<void>();
   passwordRecoveryForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
   });
+
+  private unsubscribe$ = new Subject<void>();
 
   constructor(private passwordRecoveryService: PasswordRecoveryService, private router: Router) { }
 
@@ -30,13 +31,13 @@ export class PasswordRecoveryComponent implements OnDestroy{
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (res: any) => {
-          this.goToLoginPage(); 
+          this.goToLoginPage();
         },
         error: (error) => {
           this.errorFlag = true;
           this.errorMessage = "An error occurred while trying to send you a new password.";
         }
-    });
+      });
   }
 
   getEmail(): string {

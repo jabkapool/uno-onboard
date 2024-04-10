@@ -24,6 +24,7 @@ namespace UnoWebAPI.Services {
             //Register Services here
             services.AddScoped<IUnoDbContext, UnoDbContext>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ISensorsService, SensorsService>();
             return services;
         }
     }
