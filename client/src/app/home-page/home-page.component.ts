@@ -27,7 +27,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.homePageService.getHomePage()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (response: any) => { console.log(response);},
+        next: (response: any) => {},
         error: (error: any) => { console.log(error);}
       });
   }
