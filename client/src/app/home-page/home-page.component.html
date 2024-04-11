@@ -6,12 +6,11 @@
     <div class="col-md-12">
       <app-top-bar></app-top-bar>
       <div *ngIf="!displayUsers">
-        <app-dashboards></app-dashboards>
-        <app-sensors></app-sensors>
+        <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
       </div>
       <div *ngIf="displayUsers">
         <app-list-users></app-list-users>
-    </div>
+     </div> 
   </div>
 </div>
-<router-outlet></router-outlet>

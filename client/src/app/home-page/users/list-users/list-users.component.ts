@@ -34,7 +34,6 @@ export class ListUsersComponent implements OnInit, OnDestroy{
       .subscribe({
         next: (usersList: any) => { 
           this.users = usersList;
-          console.log(this.users);
         },
         error: (error: any) => { 
           console.log(error);
@@ -59,3 +58,4 @@ export class ListUsersComponent implements OnInit, OnDestroy{
   }
 
 }
+
