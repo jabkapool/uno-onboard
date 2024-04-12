@@ -8,10 +8,10 @@ using Microsoft.IdentityModel.Tokens;
 using UnoWebApi.Application.Helpers;
 using UnoWebApi.Application.Services.Interfaces;
 using UnoWebApi.Domain.Entities;
+using UnoWebApi.Application.Dtos;
 using UnoWebApi.Domain.Models;
 using UnoWebApi.Infrastructure.Context.Interfaces;
 using AutoMapper;
-using UnoWebApi.Domain.Dtos;
 
 namespace UnoWebApi.Application.Services {
     public class UserService: IUserService {

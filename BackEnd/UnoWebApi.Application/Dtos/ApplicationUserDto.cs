@@ -1,4 +1,4 @@
-﻿namespace UnoWebApi.Domain.Dtos {
+﻿namespace UnoWebApi.Application.Dtos {
     public class ApplicationUserDto {
         public Guid Id { get; set; }
         public string? Name { get; set; }

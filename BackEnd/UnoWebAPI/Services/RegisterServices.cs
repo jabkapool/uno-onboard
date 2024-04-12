@@ -5,7 +5,7 @@ using UnoWebApi.Application.Services;
 using UnoWebApi.Application.Services.Interfaces;
 using UnoWebApi.Infrastructure.Context;
 using UnoWebApi.Infrastructure.Context.Interfaces;
-using UnoWebApi.Domain.Mappings;
+using UnoWebApi.Application.Mappings;
 
 namespace UnoWebAPI.Services {
     public static class RegisterServices {

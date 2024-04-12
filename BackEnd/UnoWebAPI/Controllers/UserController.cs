@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UnoWebApi.Application.Helpers;
 using UnoWebApi.Application.Services.Interfaces;
-using UnoWebApi.Domain.Dtos;
+using UnoWebApi.Application.Dtos;
 using UnoWebApi.Domain.Entities;
 using UnoWebApi.Domain.Models;
 
@@ -71,7 +71,7 @@ namespace UnoWebAPI.Controllers {
         /// <returns>The user object.</returns>
         [Authorize(Roles = "Admin, User")]
         [HttpGet("GetUserByName")]
-        public async Task<ActionResult<IEnumerable<ApplicationUser?>>> GetUserByName(string name) {
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto?>>> GetUserByName(string name) {
 
             IEnumerable<ApplicationUserDto?> applicationUserDto = await _userService.GetUserByNameAsync(name);
             return Ok(applicationUserDto);

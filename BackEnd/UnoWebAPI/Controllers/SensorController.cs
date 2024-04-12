@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UnoWebApi.Application.Services.Interfaces;
-using UnoWebApi.Domain.Dtos;
+using UnoWebApi.Application.Dtos;
 
 namespace UnoWebAPI.Controllers {
 
@@ -31,6 +31,7 @@ namespace UnoWebAPI.Controllers {
             if(userId == null) {
                 return Unauthorized();
             }
+            sensorDto.UserId = userId;
             sensorDto = await _sensorsService.CreateSensorAsync(sensorDto);
             return Ok($"Sensor Created with Id: {sensorDto.Id}, " +
                                         $"Name: {sensorDto.Name}, " +
@@ -49,6 +50,7 @@ namespace UnoWebAPI.Controllers {
             if(userId == null) {
                 return Unauthorized();
             }
+            sensorDto.UserId = userId;
             if(sensorDto.UserId != userId) {
                 return Unauthorized($"You are not authorized to update this sensor: {sensorDto.Name}");
             }
@@ -60,6 +62,17 @@ namespace UnoWebAPI.Controllers {
         [HttpPut("AddOrRemoveSensorAsFavourite")]
         public async Task<ActionResult> AddOrRemoveSensorAsFavourite([FromBody] FavouriteSensorDto favouriteSensorsDto) {
 
+            //Validate user and check sensor exists
+            Guid? userId = GetUserId(User);
+            if(userId == null) {
+                return Unauthorized();
+            }
+            bool sensorExists;
+            sensorExists = await _sensorsService.CheckSensorExists(favouriteSensorsDto.SensorId);
+            if(!sensorExists) {
+                return NotFound($"Sensor with Id: {favouriteSensorsDto.SensorId} does not exist");
+            }
+            favouriteSensorsDto.UserId = userId;
             bool result = await _sensorsService.AddOrRemoveSensorAsFavouriteAsync(favouriteSensorsDto);
             if(!result) {
                 return BadRequest($"Error adding or removing sensor as favourite. User Id: {favouriteSensorsDto.UserId}, Sensor Id: {favouriteSensorsDto.SensorId}");
@@ -68,8 +81,11 @@ namespace UnoWebAPI.Controllers {
         }
 
         private static Guid? GetUserId(ClaimsPrincipal user) {
-            if(user.Identity!.IsAuthenticated) {
-                return Guid.Parse(user.FindFirst(ClaimTypes.Sid)!.Value);
+            if(user?.Identity?.IsAuthenticated == true) {
+                var claim = user.FindFirst(ClaimTypes.Sid);
+                if(claim != null) {
+                    return Guid.Parse(claim.Value);
+                }
             }
             return null;
         }

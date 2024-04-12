@@ -1,4 +1,4 @@
-﻿using UnoWebApi.Domain.Dtos;
+﻿using UnoWebApi.Application.Dtos;
 
 namespace UnoWebApi.Application.Services.Interfaces {
     public interface ISensorsService {
@@ -6,5 +6,6 @@ namespace UnoWebApi.Application.Services.Interfaces {
         Task<SensorsDto> CreateSensorAsync(SensorsDto sensorDto);
         Task<SensorsDto> UpdateSensorAsync(SensorsDto sensorDto);
         Task<bool> AddOrRemoveSensorAsFavouriteAsync(FavouriteSensorDto favouriteSensorDto);
+        Task<bool> CheckSensorExists(Guid sensorId);
     }
 }

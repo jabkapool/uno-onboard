@@ -1,6 +1,6 @@
 ﻿using UnoWebApi.Domain.Entities;
 using UnoWebApi.Domain.Models;
-using UnoWebApi.Domain.Dtos;
+using UnoWebApi.Application.Dtos;
 
 namespace UnoWebApi.Application.Services.Interfaces {
     public interface IUserService {

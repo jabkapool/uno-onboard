@@ -1,9 +1,15 @@
-﻿namespace UnoWebApi.Domain.Dtos {
+﻿namespace UnoWebApi.Application.Dtos {
     public class FavouriteSensorDto {
+
+        /// <summary>
+        /// The unique identifier for the user favourite sensor.
+        /// </summary>
+        public Guid? Id { get; set; }
+
         /// <summary>
         /// The unique identifier for the user.
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
    
         /// <summary>
         /// The unique identifier for the sensor.

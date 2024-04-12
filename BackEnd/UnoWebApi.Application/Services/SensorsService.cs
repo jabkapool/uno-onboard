@@ -1,5 +1,5 @@
 ﻿using UnoWebApi.Application.Services.Interfaces;
-using UnoWebApi.Domain.Dtos;
+using UnoWebApi.Application.Dtos;
 using UnoWebApi.Domain.Entities;
 using UnoWebApi.Infrastructure.Context.Interfaces;
 using AutoMapper;
@@ -37,30 +37,31 @@ namespace UnoWebApi.Application.Services {
 
         public async Task<SensorsDto> UpdateSensorAsync(SensorsDto sensorDto) {
 
-            Sensors? sensors = _mapper.Map<Sensors>(sensorDto);
+            Sensors sensor = _mapper.Map<Sensors>(sensorDto);
             try {
-                sensors = await _unoDbContext.Sensors.FirstOrDefaultAsync(s => s.Id == sensorDto.Id);
-            }
-            catch (DbUpdateException ex) {
-                throw new DbUpdateException("Could not find the sensor to update", ex);
-            }
-
-            try {
-                _unoDbContext.Sensors.Update(sensors!);
+                _unoDbContext.Sensors.Update(sensor);
                 await _unoDbContext.SaveChangesAsync();
             } catch (DbUpdateException ex) {
                 throw new DbUpdateException("Error updating sensor", ex);
             }
-            return _mapper.Map<SensorsDto>(sensors);
+            return _mapper.Map<SensorsDto>(sensor);
         }
 
         public async Task<bool> AddOrRemoveSensorAsFavouriteAsync(FavouriteSensorDto favouriteSensorDto) {
 
             FavouriteSensor favouriteSensor = _mapper.Map<FavouriteSensor>(favouriteSensorDto);
             if(favouriteSensorDto.MarkAsFavourite) {
+                favouriteSensor.Id = Guid.NewGuid();
                 _unoDbContext.FavouriteSensors.Add(favouriteSensor);
-            } else {
-                _unoDbContext.FavouriteSensors.Remove(favouriteSensor);
+            } 
+            else {
+                FavouriteSensor? existingfavouriteSensor = await _unoDbContext.FavouriteSensors
+                    .FirstOrDefaultAsync(fs => fs.UserId == favouriteSensor.UserId
+                                            && fs.SensorId == favouriteSensor.SensorId);
+                if(existingfavouriteSensor == null) {
+                    return false;
+                }
+                _unoDbContext.FavouriteSensors.Remove(existingfavouriteSensor);
             }
             try {
                 await _unoDbContext.SaveChangesAsync();
@@ -69,6 +70,14 @@ namespace UnoWebApi.Application.Services {
                 throw new DbUpdateException("Error adding or removing sensor as favourite", ex);
             }
             return true;
+        }
+        public async Task<bool> CheckSensorExists(Guid sensorId) {
+
+            Sensors? sensor = await _unoDbContext.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);
+            if (sensor != null) {
+                return true;
+            }
+            return false;
         }
     }
 }
