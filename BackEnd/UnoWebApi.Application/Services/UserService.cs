@@ -10,6 +10,8 @@ using UnoWebApi.Application.Services.Interfaces;
 using UnoWebApi.Domain.Entities;
 using UnoWebApi.Domain.Models;
 using UnoWebApi.Infrastructure.Context.Interfaces;
+using AutoMapper;
+using UnoWebApi.Domain.Dtos;
 
 namespace UnoWebApi.Application.Services {
     public class UserService: IUserService {
@@ -17,36 +19,39 @@ namespace UnoWebApi.Application.Services {
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IUnoDbContext _context;
+        private readonly IMapper _mapper;
         public UserService(UserManager<ApplicationUser> userManager,
                            RoleManager<IdentityRole<Guid>> roleManager,
                            IConfiguration configuration,
-                           IUnoDbContext dbContext) {
+                           IUnoDbContext dbContext,
+                           IMapper mapper) {
 
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _context = dbContext;
+            _mapper = mapper;
         }
 
         /// <summary>
         /// Service to get all the users in the system from controller  "GetAllUsers"
         /// </summary>
-        public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync() {
+        public async Task<IEnumerable<ApplicationUserDto>> GetAllUsersAsync() {
 
-            List<ApplicationUser> users = await _userManager.Users.ToListAsync();
-            return users;
+            IEnumerable<ApplicationUserDto> applicationUserDto = _mapper.Map<IEnumerable<ApplicationUserDto>>(await _userManager.Users.ToListAsync());
+            return applicationUserDto;
         }
 
         /// <summary>
         /// Service to get a user by its id from controller  "GetUserById"
         /// </summary>
-        public async Task<ApplicationUser?> GetUserByIdAsync(Guid id) {
+        public async Task<ApplicationUserDto?> GetUserByIdAsync(Guid id) {
 
             if(id == Guid.Empty) {
                 throw new ArgumentNullException(nameof(id));
             }
-            ApplicationUser? user = await _userManager.FindByIdAsync(id.ToString());
-            return user ?? null;
+            ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(await _userManager.FindByIdAsync(id.ToString()));
+            return applicationUserDto ?? null;
         }
 
         /// <summary>
@@ -56,35 +61,42 @@ namespace UnoWebApi.Application.Services {
         /// <param name="orderBy">Order by Name or Email; default order by Name</param>
         /// <param name="direction">Order Ascending or Descending; Default order Ascending</param>
         /// <returns>A list of users ordered</returns>
-        public async Task<IEnumerable<ApplicationUser?>?> ListUsersAsync(string searchQuery, string orderBy, int direction) {
+        public async Task<IEnumerable<ApplicationUserDto?>?> ListUsersAsync(string searchQuery, string orderBy, int direction) {
 
             string normalizedString = GenericHelper.RemoveDiacritics(searchQuery);
-            IEnumerable<ApplicationUser?> users = await _userManager.Users.Where(u => u.Name!.Contains(normalizedString) ||
-                    u.UserName!.Contains(normalizedString) ||
-                    u.Email!.Contains(normalizedString))
-                .ToListAsync();
-            if(users.IsNullOrEmpty()) {
+            IEnumerable<ApplicationUserDto?> applicationUserDto = 
+                _mapper.Map<IEnumerable<ApplicationUserDto?>>(
+                    await _userManager.Users.Where(
+                        u => u.Name!.Contains(normalizedString) ||
+                        u.UserName!.Contains(normalizedString) ||
+                        u.Email!.Contains(normalizedString))
+                .ToListAsync());
+
+            if(applicationUserDto.IsNullOrEmpty()) {
                 return null;
             }
-            users = orderBy switch {
-                "Name" => direction == 0 ? users.OrderBy(u => u!.Name) : users.OrderByDescending(u => u!.Name),
-                "Email" => direction == 0 ? users.OrderBy(u => u!.Email) : users.OrderByDescending(u => u!.Email),
-                _ => users
+            applicationUserDto = orderBy switch {
+                "Name" => direction == 0 ? applicationUserDto.OrderBy(u => u!.Name) : applicationUserDto.OrderByDescending(u => u!.Name),
+                "Email" => direction == 0 ? applicationUserDto.OrderBy(u => u!.Email) : applicationUserDto.OrderByDescending(u => u!.Email),
+                _ => applicationUserDto
             };
-            return users;
+            return applicationUserDto;
         }
 
         /// <summary>
         /// Service to get a user by its name from controller  "GetUserByName"
         /// </summary>
-        public async Task<IEnumerable<ApplicationUser?>> GetUserByNameAsync(string name) {
+        public async Task<IEnumerable<ApplicationUserDto?>> GetUserByNameAsync(string name) {
 
             if(name.IsNullOrEmpty()) {
                 throw new ArgumentNullException(nameof(name));
             }
-            string normName = GenericHelper.RemoveDiacritics(name);
-            IEnumerable<ApplicationUser?> users = await _userManager.Users.Where(u => u.Name!.Contains(normName) || u.UserName!.Contains(normName)).ToListAsync();
-            return users;
+            string normalizedName = GenericHelper.RemoveDiacritics(name);
+            IEnumerable<ApplicationUserDto?> applicationUserDto = _mapper.Map<IEnumerable<ApplicationUserDto?>>(
+                await _userManager.Users.Where(u => u.Name!.Contains(normalizedName) || 
+                                               u.UserName!.Contains(normalizedName))
+                .ToListAsync());
+            return applicationUserDto;
         }
 
         /// <summary>
@@ -215,10 +227,12 @@ namespace UnoWebApi.Application.Services {
         /// <summary>
         /// Service to update a user from controller  "UpdateUser"
         /// </summary>
-        public async Task<ApplicationUser?> UpdateUserAsync(ApplicationUser user) {
+        public async Task<ApplicationUserDto?> UpdateUserAsync(ApplicationUserDto userDto) {
 
+            ApplicationUser user = _mapper.Map<ApplicationUser>(userDto);
             IdentityResult identityResult = await _userManager.UpdateAsync(user);
-            return identityResult.Succeeded ? user : null;
+            ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(await _userManager.FindByEmailAsync(user.Email!));
+            return identityResult.Succeeded ? applicationUserDto : null;
         }
 
         /// <summary>

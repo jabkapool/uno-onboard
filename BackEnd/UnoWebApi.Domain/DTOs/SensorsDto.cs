@@ -1,5 +1,10 @@
-﻿namespace UnoWebApi.Domain.DTOs {
+﻿namespace UnoWebApi.Domain.Dtos {
     public class SensorsDto {
+
+        /// <summary>
+        /// The Id of the Sensor. PK
+        /// </summary>
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// The Name of the Sensor.
@@ -31,7 +36,7 @@
         /// The User Id to which the Sensor belongs to.
         /// It's the Foreign Key to the User table, recognized by the navigation property.
         /// </summary>
-        public Guid UserId { get; set; } = Guid.Empty; //UserId is the logged-in user
+        public Guid? UserId { get; set; } = Guid.Empty; //UserId is the logged-in user
 
         // Id is created by the database; Not included in the Dto 
 

@@ -5,6 +5,7 @@ using UnoWebApi.Application.Services;
 using UnoWebApi.Application.Services.Interfaces;
 using UnoWebApi.Infrastructure.Context;
 using UnoWebApi.Infrastructure.Context.Interfaces;
+using UnoWebApi.Domain.Mappings;
 
 namespace UnoWebAPI.Services {
     public static class RegisterServices {
@@ -25,6 +26,7 @@ namespace UnoWebAPI.Services {
             services.AddScoped<IUnoDbContext, UnoDbContext>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ISensorsService, SensorsService>();
+            services.AddAutoMapper(typeof(AutoMapperConfig).Assembly);
             return services;
         }
     }
