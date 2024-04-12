@@ -82,7 +82,6 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="model">The registration model with the required information to fill: Name. Email, Role, Phone.</param>
         /// <returns>User created if successful.</returns>
-        //[Authorize(Roles = "Admin")]
         [AllowAnonymous]
         [HttpPost("Create")]
         public async Task<IActionResult> Register(Registration model) {
