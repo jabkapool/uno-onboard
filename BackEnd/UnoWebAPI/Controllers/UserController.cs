@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UnoWebApi.Application.Helpers;
 using UnoWebApi.Application.Services.Interfaces;
-using UnoWebApi.Domain.DTOs;
+using UnoWebApi.Application.Dtos;
 using UnoWebApi.Domain.Entities;
 using UnoWebApi.Domain.Models;
 
@@ -24,9 +24,9 @@ namespace UnoWebAPI.Controllers {
         /// <returns>All the users in the system.</returns>
         [Authorize(Roles = "Admin, User")]
         [HttpGet("GetAllUsers")]
-        public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAllUsers() {
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto>>> GetAllUsers() {
 
-            IEnumerable<ApplicationUser> users = await _userService.GetAllUsersAsync();
+            IEnumerable<ApplicationUserDto> users = await _userService.GetAllUsersAsync();
             return Ok(users);
         }
 
@@ -37,13 +37,13 @@ namespace UnoWebAPI.Controllers {
         /// <returns>The user object.</returns>
         [Authorize(Roles = "Admin, User")]
         [HttpGet("GetUserById/{id}")]
-        public async Task<ActionResult<ApplicationUser?>> GetUserById(Guid id) {
+        public async Task<ActionResult<ApplicationUserDto?>> GetUserById(Guid id) {
 
-            ApplicationUser? user = await _userService.GetUserByIdAsync(id);
-            if (user == null) {
+            ApplicationUserDto? applicationUserDto = await _userService.GetUserByIdAsync(id);
+            if (applicationUserDto == null) {
                 return NotFound("User not found!");
             }
-            return Ok(user);
+            return Ok(applicationUserDto);
         }
 
          /// <summary>
@@ -55,12 +55,13 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         [Authorize(Roles = "Admin, User")]
         [HttpGet("ListUsers")]
-        public async Task<ActionResult<IEnumerable<ApplicationUser>>> ListUsers(string searchQuery, string orderBy = "Name", int direction = 0) {
-            IEnumerable<ApplicationUser?>? users = await _userService.ListUsersAsync(searchQuery, orderBy, direction);
-            if(users == null) {
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto>>> ListUsers(string searchQuery, string orderBy = "Name", int direction = 0) {
+
+            IEnumerable<ApplicationUserDto?>? applicationUserDto = await _userService.ListUsersAsync(searchQuery, orderBy, direction);
+            if(applicationUserDto == null) {
                 return NotFound("No users found!");
             }
-            return Ok(users);
+            return Ok(applicationUserDto);
         }
 
         /// <summary>
@@ -70,10 +71,10 @@ namespace UnoWebAPI.Controllers {
         /// <returns>The user object.</returns>
         [Authorize(Roles = "Admin, User")]
         [HttpGet("GetUserByName")]
-        public async Task<ActionResult<IEnumerable<ApplicationUser?>>> GetUserByName(string name) {
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto?>>> GetUserByName(string name) {
 
-            IEnumerable<ApplicationUser?> user = await _userService.GetUserByNameAsync(name);
-            return Ok(user);
+            IEnumerable<ApplicationUserDto?> applicationUserDto = await _userService.GetUserByNameAsync(name);
+            return Ok(applicationUserDto);
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="model">The registration model with the required information to fill: Name. Email, Role, Phone.</param>
         /// <returns>User created if successful.</returns>
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpPost("Create")]
         public async Task<IActionResult> Register(Registration model) {
 
@@ -172,16 +173,15 @@ namespace UnoWebAPI.Controllers {
                 if (!ModelState.IsValid) {
                     return BadRequest("Invalid payload!");
                 }
-                ApplicationUser? user = await _userService.GetUserByIdAsync(userDto.Id);
-                if (user == null) {
+                ApplicationUserDto? applicationUserDto = await _userService.GetUserByIdAsync(userDto.Id);
+                if (applicationUserDto == null) {
                     return NotFound("User not found!");
                 }
-                user = ApplicationUserDto.ConvertDtoToEntity(userDto, user);
-                ApplicationUser? updatedUser = await _userService.UpdateUserAsync(user);
-                if (updatedUser == null) {
-                    return NotFound("User not found!");
+                applicationUserDto = await _userService.UpdateUserAsync(userDto);
+                if (applicationUserDto == null) {
+                    return NotFound("Could not update user!");
                 }
-                return Ok(updatedUser);
+                return Ok(applicationUserDto);
             }
             catch (Exception ex) {
                 _logger.LogError(ex.Message);

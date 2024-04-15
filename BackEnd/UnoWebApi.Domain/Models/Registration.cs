@@ -2,6 +2,9 @@
 
 namespace UnoWebApi.Domain.Models {
     public class Registration {
+        public Registration() {
+            Role = "User";
+        }
 
         /// <summary>
         /// Name of the user in the system 
