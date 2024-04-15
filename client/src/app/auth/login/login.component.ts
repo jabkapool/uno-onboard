@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoginService } from '../../services/login.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -20,7 +20,7 @@ export class LoginComponent implements OnDestroy {
   });
   showPassword: boolean = true;
 
-  constructor(private loginService: LoginService, private router: Router){
+  constructor(private authenticationService: AuthenticationService, private router: Router){
   }
 
   ngOnDestroy(): void {
@@ -42,12 +42,11 @@ export class LoginComponent implements OnDestroy {
    * @returns void
    */
   onSubmit(): void {
-    this.loginService.login(this.getEmail(), this.getPassword())
+    this.authenticationService.login(this.getEmail(), this.getPassword())
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (res: any) => {
-          this.loginService.storeToken(res.token);
-          this.loginService.storeUserName(res.userName);
+          this.authenticationService.storeUserData(res.token, res.userName, res.role);
           this.goToHomePage(); 
         },
         error: (error) => {

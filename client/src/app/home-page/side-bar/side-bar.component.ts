@@ -1,5 +1,6 @@
-import { Component, Output } from '@angular/core';
-import { EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-side-bar',
@@ -7,10 +8,10 @@ import { EventEmitter } from '@angular/core';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent {
-  @Output()
-  newItemEvent = new EventEmitter<string>();
 
-  showUsers(value: string) {
-    this.newItemEvent.emit(value);
+  constructor(private router: Router, private route: ActivatedRoute) { }
+  
+  goToListUsers(): void {
+    this.router.navigate(['listusers'], {relativeTo: this.route});
   }
 }

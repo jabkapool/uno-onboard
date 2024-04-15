@@ -2,7 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UsersService } from 'src/app/services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Users } from 'src/app/data/users';
+import { User } from 'src/app/data/user';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-list-users',
@@ -11,15 +14,20 @@ import { Users } from 'src/app/data/users';
 })
 export class ListUsersComponent implements OnInit, OnDestroy{
   private unsubscribe$ = new Subject<void>();
-  users: Users[] = [];
-  displayedColumns: string[] = ['nome', 'email', 'phone'];
+  isUserAdmin: boolean = false;
+  users: User[] = [];
   searchText!: string;
   noData: boolean = false;
   noDataMessage: string = 'There are no users with that name or email';
-
-  constructor(private usersService: UsersService) { }
+  displayedColumns: string[] = ['nome', 'email', 'role', 'phone', 'edit', 'delete'];
+ 
+  constructor(private usersService: UsersService, 
+              private router: Router, 
+              private route: ActivatedRoute,
+              private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.isUserAdmin = this.authenticationService.hasPermission(this.route.snapshot);
     this.showAllUsers();
   }
 
@@ -35,7 +43,7 @@ export class ListUsersComponent implements OnInit, OnDestroy{
         next: (usersList: any) => { 
           this.users = usersList;
         },
-        error: (error: any) => { 
+        error: (error: any) => {
           console.log(error);
           this.users = [];
         }
@@ -50,11 +58,27 @@ export class ListUsersComponent implements OnInit, OnDestroy{
           this.users = usersList;
           this.noData = false;
         },
-        error: (error: any) => {
+        error: () => {
           this.users = [];
           this.noData = true;
         }
       });
+  }
+
+  createUser() : void {
+    if(this.isUserAdmin) {
+      this.router.navigate(['../createuser'], {relativeTo: this.route});
+    }
+    else {
+      alert('You do not have permission to create a new user');    
+    }
+  }
+
+  checkIfUserIsAdmin(): boolean {
+    if(sessionStorage.getItem('role') === 'Admin') {
+      return true;
+    }
+    return false;
   }
 
 }

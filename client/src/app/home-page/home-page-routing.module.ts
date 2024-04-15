@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page.component';
+import { CreateUsersComponent } from './users/create-users/create-users.component';
+import { ListUsersComponent } from './users/list-users/list-users.component';
 
 const routes: Routes = [
-{
+  {
       path: '',
       component: HomePageComponent,
       children: [
@@ -14,9 +16,17 @@ const routes: Routes = [
           {
               path: '',
               loadChildren: () => import('./sensors/sensors.module').then(m => m.SensorsModule)
+          },
+          {
+            path: 'listusers',
+            component: ListUsersComponent
+         },
+          {
+            path: 'createuser',
+            component: CreateUsersComponent
           }
       ]
-  },
+  }
 ];
 
 @NgModule({

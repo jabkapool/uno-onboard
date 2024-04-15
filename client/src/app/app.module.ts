@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ApiVersionComponent } from './api-version/api-version.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './data/auth-interceptor';
+import { AuthInterceptor } from './helpers/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
