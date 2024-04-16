@@ -50,11 +50,7 @@ namespace UnoWebApi.Application.Services {
             if(id == Guid.Empty) {
                 throw new ArgumentNullException(nameof(id));
             }
-            //ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(await _userManager.FindByIdAsync(id.ToString()));
-            ApplicationUser? user = await _userManager.FindByIdAsync(id.ToString());
-            ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(user);
-            applicationUserDto.Picture = Convert.ToBase64String(user.Picture);
-
+            ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(await _userManager.FindByIdAsync(id.ToString()));
             return applicationUserDto ?? null;
         }
 
@@ -124,8 +120,9 @@ namespace UnoWebApi.Application.Services {
                 Name = model.Name,
                 UserName = GenericHelper.RemoveDiacritics(model.Name!),
                 Email = model.Email,
-                Picture = pictureBytes,
+                Picture = strImageBase64,
                 PhoneNumber = model.PhoneNumber,
+                Role = model.Role,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 

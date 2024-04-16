@@ -11,7 +11,12 @@ namespace UnoWebApi.Domain.Entities {
         /// <summary>
         /// The Picture of the User in the system.
         /// </summary>
-        public byte[]? Picture { get; set; }
+        public string? Picture { get; set; }
+
+        /// <summary
+        /// The User Role Name.
+        /// </summary>
+        public string? Role { get; set; }
 
         /// <summary>
         /// Navigation Property for the Sensors marked as favourite.
