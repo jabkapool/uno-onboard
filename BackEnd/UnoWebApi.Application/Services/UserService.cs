@@ -187,7 +187,7 @@ namespace UnoWebApi.Application.Services {
             loginResult.Role = userRoles.FirstOrDefault();
             loginResult.Email = user.Email;
             loginResult.PhoneNumber = user.PhoneNumber;
-            //loginResult.Picture = user.Picture;
+            loginResult.Picture = user.Picture;
 
             return (1, loginResult);
         }
