@@ -50,7 +50,11 @@ namespace UnoWebApi.Application.Services {
             if(id == Guid.Empty) {
                 throw new ArgumentNullException(nameof(id));
             }
-            ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(await _userManager.FindByIdAsync(id.ToString()));
+            //ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(await _userManager.FindByIdAsync(id.ToString()));
+            ApplicationUser? user = await _userManager.FindByIdAsync(id.ToString());
+            ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(user);
+            applicationUserDto.Picture = Convert.ToBase64String(user.Picture);
+
             return applicationUserDto ?? null;
         }
 
@@ -108,15 +112,19 @@ namespace UnoWebApi.Application.Services {
             if(userExists != null) {
                 return (0, "User already exists!");
             }
-            //Until Frontend is not ready upload a default picture. In frontend user will be able to choose picture from file system
-            const string filePath = @"C:\Temp\DefaultPicture.jpg";
+
+            //On creating user, set a default standard picture. In frontend user will be able to choose picture from file system by editing its profile.
+            const string filePath = @"C:\Temp\DefaultPicture.png";
+            byte[] pictureBytes = await File.ReadAllBytesAsync(filePath);
+            string strImageBase64 = Convert.ToBase64String(pictureBytes);
+
 
             ApplicationUser user = new() {
                 Id = Guid.NewGuid(),
                 Name = model.Name,
                 UserName = GenericHelper.RemoveDiacritics(model.Name!),
                 Email = model.Email,
-                Picture = await File.ReadAllBytesAsync(filePath),
+                Picture = pictureBytes,
                 PhoneNumber = model.PhoneNumber,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
@@ -180,7 +188,10 @@ namespace UnoWebApi.Application.Services {
             loginResult.Token = token;
             loginResult.Expiration = DateTime.Now.AddMinutes(50).ToString("o",CultureInfo.InvariantCulture);
             loginResult.Role = userRoles.FirstOrDefault();
-            
+            loginResult.Email = user.Email;
+            loginResult.PhoneNumber = user.PhoneNumber;
+            //loginResult.Picture = user.Picture;
+
             return (1, loginResult);
         }
 
@@ -256,16 +267,18 @@ namespace UnoWebApi.Application.Services {
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<bool> UserLogout(RefreshTokens token) {
+        public async Task<bool> UserLogout(Guid id) {
 
-            RefreshTokens? refreshToken = await _context.RefreshTokens.Where(rt => rt.Id == token.Id).FirstOrDefaultAsync();
-            if (refreshToken == null) {
+            IEnumerable<RefreshTokens> refreshTokens = await _context.RefreshTokens.Where(rt => rt.UserId == id).ToListAsync();
+            if (refreshTokens == null) {
                 return false;
             }
-            
-            refreshToken.Revoked = true;
-            refreshToken.UpdatedAt = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
-            _context.RefreshTokens.Update(refreshToken);
+
+            foreach (RefreshTokens item in refreshTokens) {
+                item.Revoked = true;
+                item.UpdatedAt = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
+                _context.RefreshTokens.Update(item);
+            }
             await _context.SaveChangesAsync();
             return true;
         }

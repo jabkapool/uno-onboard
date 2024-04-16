@@ -14,6 +14,6 @@ namespace UnoWebApi.Application.Services.Interfaces {
         Task<(int, string)> PasswordRecoveryAsync(string email);
         Task<ApplicationUserDto?> UpdateUserAsync(ApplicationUserDto userDto);
         Task<ApplicationUser?> DeleteUserByIdAsync(Guid id);
-        Task<bool> UserLogout(RefreshTokens token);
+        Task<bool> UserLogout(Guid id);
     }
 }

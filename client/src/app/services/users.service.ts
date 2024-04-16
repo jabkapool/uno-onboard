@@ -21,7 +21,21 @@ export class UsersService {
   
   public createUser(user: User): Observable<any> {
     const body = { name: user.name, email: user.email, role: user.role, phoneNumber: user.phoneNumber };
-    console.log(this.usersUrl+'/Create')
     return this.http.post(this.usersUrl+'/Create', body);
   }
+
+  public getUserById(id: string): Observable<User> {
+    return this.http.get<User>(this.usersUrl+'/GetUserById/'+id);
+  }
+
+  public logoff(user: User): Observable<any> {
+    const body = { id: user.id };
+    return this.http.post(this.usersUrl+'/Logout', body);
+  }
+
+  public deleteUser(id: string): Observable<any> {
+    return this.http.delete(this.usersUrl+'/DeleteUserById/'+id);
+  }
+
+
 }

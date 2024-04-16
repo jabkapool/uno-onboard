@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { CreateUsersComponent } from './users/create-users/create-users.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserDetailsComponent } from './users/user-details/user-details.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SideBarComponent,
     TopBarComponent,
     ListUsersComponent,
-    CreateUsersComponent
+    CreateUsersComponent,
+    UserDetailsComponent
   ],
   imports: [
     CommonModule,

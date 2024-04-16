@@ -35,5 +35,20 @@
         ///The user role.
         ///</summary>
         public string? Role { get; set; }
+
+        ///<summary>
+        /// The user Email.
+        ///</summary>
+        public string? Email { get; set; }
+
+        ///<summary>
+        ///The User Phone.
+        ///</summary>
+        public string? PhoneNumber { get; set; }
+
+        ///<summary>
+        ///The profile picture.
+        ///</summary>
+        public string? Picture { get; set; }
     }
 }

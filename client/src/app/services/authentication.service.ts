@@ -22,10 +22,11 @@ export class AuthenticationService {
     return this.http.post(this.loginUrl, body);
   }
 
-  storeUserData(tokenValue: string, userName: string, roleName: string): void {
-    sessionStorage.setItem('token', tokenValue);
+  storeUserData(id: string, userName: string, roleName: string, tokenValue: string): void {
+    sessionStorage.setItem('userId', id);
     sessionStorage.setItem('userName', userName);
     sessionStorage.setItem('role', roleName);
+    sessionStorage.setItem('token', tokenValue);
   }
 
   getToken() {

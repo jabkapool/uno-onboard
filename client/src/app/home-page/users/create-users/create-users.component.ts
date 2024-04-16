@@ -54,7 +54,7 @@ export class CreateUsersComponent implements OnInit {
           next: () => {
               this.goToUsersList();
           },
-          error: () => {
+          error: (error: any) => {
               this.errorFlag = true;
               try {
                   this.errorMessage = "The user has not been created. Try again later."

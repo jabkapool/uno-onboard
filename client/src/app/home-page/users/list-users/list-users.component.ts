@@ -70,7 +70,7 @@ export class ListUsersComponent implements OnInit, OnDestroy{
       this.router.navigate(['../createuser'], {relativeTo: this.route});
     }
     else {
-      alert('You do not have permission to create a new user');    
+      alert('You do not have permission to create a new user');
     }
   }
 
@@ -81,5 +81,21 @@ export class ListUsersComponent implements OnInit, OnDestroy{
     return false;
   }
 
+  goToUserDetails(id: string): void {
+    this.router.navigate(['../userdetails', id], {relativeTo: this.route});
+  }
+
+  deleteUser(id: string): void {
+    this.usersService.deleteUser(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['./listusers'], {relativeTo: this.route});
+        },
+        error: (error: any) => {
+          console.log(error);
+        }
+      });
+    }
 }
 

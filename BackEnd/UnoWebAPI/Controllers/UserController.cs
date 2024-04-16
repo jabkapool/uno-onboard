@@ -97,7 +97,7 @@ namespace UnoWebAPI.Controllers {
                 if(status == 0) {
                     return BadRequest(message);
                 }
-                return Ok(message);
+                return Ok(new { OkMessage = message });
             }
             catch(Exception ex) {
                 _logger.LogError(ex.Message);
@@ -127,7 +127,6 @@ namespace UnoWebAPI.Controllers {
                     return BadRequest("Failed to create refresh token!");
                 }
                 return Ok(loginResult);
-              
             }
             catch(Exception ex) {
                 _logger.LogError(ex.Message);
@@ -203,7 +202,7 @@ namespace UnoWebAPI.Controllers {
                 if (user == null) {
                     return NotFound("User not found!");
                 }
-                return Ok("User deleted successfully!");
+                return Ok(new { OkMessage = "User deleted successfully!" });
             }
             catch (Exception ex) {
                 _logger.LogError(ex.Message);
@@ -215,14 +214,13 @@ namespace UnoWebAPI.Controllers {
         /// Logout user from the application
         ///</summary>
         [Authorize(Roles = "Admin, User")]
-        [HttpPost]
-        public async Task<IActionResult> Logoff(RefreshTokens refreshToken) {
-            bool logOutUser = await _userService.UserLogout(refreshToken);
-            if (!logOutUser)
-            {
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout([FromBody] ApplicationUserDto user) {
+            bool logOutUser = await _userService.UserLogout(user.Id);
+            if (!logOutUser) {
                 return BadRequest("Failed logging out the user!");
             }
-            return Ok("User logged out successfully!");
+            return Ok(new { OkMessage = "User logged out successfully!" });
         }
     }
 }

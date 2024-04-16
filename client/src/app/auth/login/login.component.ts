@@ -45,8 +45,11 @@ export class LoginComponent implements OnDestroy {
     this.authenticationService.login(this.getEmail(), this.getPassword())
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (res: any) => {
-          this.authenticationService.storeUserData(res.token, res.userName, res.role);
+        next: (response: any) => {
+          this.authenticationService.storeUserData(response.userId, 
+                                                  response.userName, 
+                                                  response.role, 
+                                                  response.token);
           this.goToHomePage(); 
         },
         error: (error) => {
