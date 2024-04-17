@@ -21,6 +21,32 @@ namespace UnoWebApi.Application.Services {
             return sensorsDto;
         }
 
+        public async Task<SensorsDto?> GetSensorByIdAsync(Guid sensorId) {
+
+            Sensors? sensor = await _unoDbContext.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);
+            if(sensor == null) {
+                return null;
+            }
+            return _mapper.Map<SensorsDto>(sensor);
+        }
+
+        public async Task<IEnumerable<SensorsDto?>?> ListSensorsAsync(string searchQuery, string orderBy, int direction) {
+
+            IEnumerable<Sensors?>? sensors = await _unoDbContext.Sensors
+                .Where(s => s.Name!.Contains(searchQuery) || s.Description!.Contains(searchQuery) || s.Category!.Contains(searchQuery))
+                .ToListAsync();
+            if(orderBy == "Name") {
+                sensors = direction == 0 ? sensors.OrderBy(s => s!.Name) : sensors.OrderByDescending(s => s!.Name);
+            } 
+            else if(orderBy == "Description") {
+                sensors = direction == 0 ? sensors.OrderBy(s => s!.Description) : sensors.OrderByDescending(s => s!.Description);
+            }
+            else if ((orderBy == "Category")) {
+                sensors = direction == 0 ? sensors.OrderBy(s => s!.Category) : sensors.OrderByDescending(s => s!.Category);
+            }
+            return _mapper.Map<IEnumerable<SensorsDto>>(sensors);
+        }
+
         public async Task<SensorsDto> CreateSensorAsync(SensorsDto sensorDto) {
 
             Sensors sensor = _mapper.Map<Sensors>(sensorDto);
@@ -79,7 +105,29 @@ namespace UnoWebApi.Application.Services {
             }
             return false;
         }
+
+        public async Task<bool> AddSensorDataAsync(Guid sensorId, IEnumerable<SensorDataDto> sensorDataDto) {
+
+            IEnumerable<SensorData> sensorData = _mapper.Map<IEnumerable<SensorData>>(sensorDataDto);
+            foreach(SensorData sd in sensorData) {
+                sd.Id = Guid.NewGuid();
+                sd.SensorId = sensorId;
+            }
+            try {
+                await _unoDbContext.SensorsData.AddRangeAsync(sensorData);
+                await _unoDbContext.SaveChangesAsync();
+            } catch (DbUpdateException ex) {
+                throw new DbUpdateException("Error adding sensor data", ex);
+            }
+            return true;
+        }
+
+        public async Task<IEnumerable<SensorDataDto>> GetSensorDataAsync(Guid sensorId, DateTime from, DateTime to) {
+
+            IEnumerable<SensorData> sensorData = await _unoDbContext.SensorsData
+                .Where(sd => sd.SensorId == sensorId && sd.TimeStamp >= from && sd.TimeStamp <= to)
+                .ToListAsync();
+            return _mapper.Map<IEnumerable<SensorDataDto>>(sensorData);
+        }
     }
 }
-
-

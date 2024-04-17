@@ -27,10 +27,13 @@ export class SideBarComponent {
     this.router.navigate(['listusers'], {relativeTo: this.route});
   }
 
-  logout(): void {
+  goToSensors(): void {
+    this.router.navigate(['sensors/createsensor'], {relativeTo: this.route});
+  }
 
+  logout(): void {
     this.user.id = sessionStorage?.getItem('userId') as string;
-    
+
     if(this.user.id !== null) {
       this.usersService.logoff(this.user)
       .subscribe({

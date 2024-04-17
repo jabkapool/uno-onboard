@@ -1,0 +1,54 @@
+<div class="container-fluid">
+    <div class="row">
+        <h1>Create Sensor</h1>
+        <p class="subtitle">Enter Sensor Details:</p><br/>
+        <form [formGroup]="createSensorForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div>
+                    <label for="name">Name:</label>
+                    <input id="name" type="text" class="form-roundred inputForm" formControlName="name"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['name'].errors?.['required']">Name is required.</div>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="isPrivate">Is Private:</label>
+                    Private<input type="radio" id="private" name="isPrivate" value="true" class="radioClass" formControlName="isPrivate">
+                    <span class="radioLabel">Public</span><input type="radio" id="public" name="isPrivate" value="false" class="radioClass" formControlName="isPrivate"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['isPrivate'].errors?.['required']">Check if Sensor is public or private</div>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="description">Description:</label>
+                    <input id="description" type="text" class="form-rounded inputForm" formControlName="description"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['description'].errors?.['required']">Description is required.</div>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="category">Category:</label>
+                    <input id="category" type="text" class="form-rounded inputForm" formControlName="category"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['category'].errors?.['required']">Category is required.</div>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="color">Color:</label>
+                    <input id="color" type="text" class="form-rounded inputForm" formControlName="color"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['color'].errors?.['required']">Color is required.</div>
+                </div>
+                <br/>
+                
+                
+                <div>
+                    <button type="submit">Enter</button>
+                </div>
+            </div>
+            <div *ngIf="errorFlag" class="errorMessage">
+                {{errorMessage}}
+            </div>
+        </form>
+    </div>
+</div>
+

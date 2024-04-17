@@ -6,6 +6,7 @@ export const environment = {
         apiVersion: 'https://localhost:7211/api/UnoWebApi/Version',
         login: 'https://localhost:7211/api/User/Login',
         passwordRecovery: 'https://localhost:7211/api/User/PasswordRecovery',
-        users: 'https://localhost:7211/api/User'
+        users: 'https://localhost:7211/api/User',
+        sensors: 'https://localhost:7211/api/Sensor',
     }
 }

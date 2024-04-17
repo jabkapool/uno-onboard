@@ -11,11 +11,11 @@ const routes: Routes = [
       component: HomePageComponent,
       children: [
           {
-              path: '',
+              path: 'dashboards',
               loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule)
           },
           {
-              path: '',
+              path: 'sensors',
               loadChildren: () => import('./sensors/sensors.module').then(m => m.SensorsModule)
           },
           {
