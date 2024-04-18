@@ -9,7 +9,8 @@
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
-    width:500px;
+    width: 100%;
+    display: flex;
 }
 
 .form-control {
@@ -17,9 +18,8 @@
     width: 300px;
 }
 
-button {
+.searchButton {
     display: inline;
-    align-items: left;
     background-color: #007bff;
     color: #fff; 
     padding: 10px 20px; 
@@ -37,4 +37,29 @@ button {
     color: red;
     font-size: 1.5rem;
     margin-top: 1rem;
+}
+
+.createUserButton {
+    display: inline;
+    background-color: #28a745;
+    color: #fff; 
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 4px;
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 150px;
+    height: 35px; 
+    margin-left:20px;
+    float: right;
+}
+
+.canNotClick {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.btn-primary {
+    min-width: 150px;
 }

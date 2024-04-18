@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row">
+        <div *ngIf="user">
+            <div class="col-md-12 userDetails">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" required>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email" required>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="user.phoneNumber" name="phoneNumber" required>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <input type="text" class="form-control" id="role" [(ngModel)]="user.role" name="role" required>
+                </div> 
+                <br/>
+                <div>
+                    <img [src]="image" alt="user image" class="userImage">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

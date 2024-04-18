@@ -33,13 +33,15 @@ namespace UnoWebAPI.Controllers {
             }
             sensorDto.UserId = userId;
             sensorDto = await _sensorsService.CreateSensorAsync(sensorDto);
-            return Ok($"Sensor Created with Id: {sensorDto.Id}, " +
-                                        $"Name: {sensorDto.Name}, " +
-                                  $"Is Private: {sensorDto.IsPrivate}, " +
-                                    $"Category: {sensorDto.Category}, " +
-                                       $"Color: {sensorDto.Color}, " +
-                                 $"Description: {sensorDto.Description}, " +
-                               $"User Owner Id: {sensorDto.UserId}");
+            return Ok(new { message = "Sensor Created",
+                            id = sensorDto.Id,
+                            name = sensorDto.Name,
+                            isPrivate = sensorDto.IsPrivate,
+                            category = sensorDto.Category,
+                            color = sensorDto.Color,
+                            description = sensorDto.Description,
+                            userId = sensorDto.UserId
+            });
         }
 
         [Authorize(Roles = "Admin, User")]

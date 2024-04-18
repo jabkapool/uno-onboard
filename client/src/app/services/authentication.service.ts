@@ -6,9 +6,10 @@ import { environment } from 'environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class AuthenticationService {
   private readonly loginUrl = environment.services.login;
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient) {}
 
   /**
    * @remarks Send the user's login credentials to the User controller, Web Api endpoint.
@@ -21,7 +22,10 @@ export class LoginService {
     return this.http.post(this.loginUrl, body);
   }
 
-  storeToken(tokenValue: string) {
+  storeUserData(id: string, userName: string, roleName: string, tokenValue: string): void {
+    sessionStorage.setItem('userId', id);
+    sessionStorage.setItem('userName', userName);
+    sessionStorage.setItem('role', roleName);
     sessionStorage.setItem('token', tokenValue);
   }
 
@@ -33,8 +37,11 @@ export class LoginService {
     return !!sessionStorage.getItem('token');
   }
 
-  storeUserName(userName: string) {
-    sessionStorage.setItem('userName', userName);
+  hasPermission(route: any): boolean {
+    if(sessionStorage.getItem('role') === 'Admin') {
+      return true;
+    }
+    return false;
   }
-  
+
 }
