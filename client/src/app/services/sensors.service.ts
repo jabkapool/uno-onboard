@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'environments/environment';
 import { Sensor } from '../data/sensor';
 import { HttpHeaders } from '@angular/common/http';
+import { SensorData } from '../data/sensorData';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,15 @@ export class SensorsService {
 
   constructor(private http: HttpClient) { }
 
-  public getAllSensors(): Observable<Sensor> {
+  public getAllSensors(): Observable<Sensor[]> {
     const url = `${this.usersUrl}/GetAllSensors`;
-    return this.http.get<Sensor>(url);
+    return this.http.get<Sensor[]>(url);
   }
 
   public getSensorById(id: string): Observable<Sensor> {
-    const url = `${this.usersUrl}/GetSensorById/${id}`;
-    return this.http.get<Sensor>(url);
+    const params = {sensorId: id};
+    const url = `${this.usersUrl}/GetSensorById`;
+    return this.http.get<Sensor>(url, {params});
   }
 
   public listSensors(searchQuery: string, orderBy: string, direction: number): Observable<Sensor> {
@@ -40,4 +42,14 @@ export class SensorsService {
     const url = `${this.usersUrl}/CreateSensor`; 
     return this.http.post(url, sensor, this.httpOptions);
   }
+
+  public addSensorData(sensorId: string, sensorData: SensorData[]): Observable<any> {
+    const url = `${this.usersUrl}/data/Add`;  
+    return this.http.post(url+'?sensorId='+sensorId, sensorData, this.httpOptions);
+  }
+
+  public updateSensor(sensor: Sensor): Observable<any> {
+    const url = `${this.usersUrl}/UpdateSensor`; 
+    return this.http.put(url, sensor, this.httpOptions);
+  } 
 }

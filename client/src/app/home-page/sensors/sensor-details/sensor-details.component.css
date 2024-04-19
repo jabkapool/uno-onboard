@@ -1,0 +1,78 @@
+.container-fluid {
+    height: 415px;
+    padding: 1px;
+    margin-left: 58px;
+}
+
+.title {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 20px 0 0 20px;
+}
+
+.top {
+    margin: 20px 0 0 20px;
+}
+
+.edit {
+    float: right;
+    padding-right:80px;
+}
+
+.medium-top {
+    margin: 40px 0 0 40px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid black;
+}
+
+.category {
+    font-size: 1.5em;
+}
+
+.category-desc {
+    font-size: 1.5em;
+    margin-left:20px;
+}
+
+.private {
+    margin: 0 0 0 100px;
+}
+
+.medium-bottom {
+    margin: 20px 0 10px 40px;
+    min-height: 100px;
+}
+
+.description-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.description {
+    font-size: 1.0em;
+    margin-top:20px;  
+}
+
+.bottom {
+    margin: 30px 0 0 40px;
+}
+
+.dashboards {
+    display: inline-block;
+    min-width: 400px;
+}
+
+.upload {
+    display: inline-block;
+}
+
+.color {
+    padding-left: 80px;
+}
+
+.color-desc {
+    margin-left: 20px;
+    text-align: left;
+    min-width: 60px;
+    font-weight: bold;
+}

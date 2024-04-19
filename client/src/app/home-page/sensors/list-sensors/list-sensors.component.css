@@ -4,6 +4,12 @@
     margin-left: 58px;
 }
 
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
 .search {
     margin-top: 20px;
     margin-left: 20px;
@@ -11,6 +17,10 @@
     margin-bottom: 20px;
     width: 100%;
     display: flex;
+}
+
+.sensor-name {
+    cursor: pointer;
 }
 
 .form-control {
@@ -33,17 +43,13 @@
     margin-left:20px;
 }
 
-.btn-primary {
-    background-color: #0902D4;
-}
-
 .errorMessage {
     color: red;
     font-size: 1.5rem;
     margin-top: 1rem;
 }
 
-.createUserButton {
+.createSensorButton {
     display: inline;
     background-color: #0902D4;
     color: #fff; 
@@ -53,7 +59,7 @@
     font-size: 16px; 
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 150px;
+    width: 250px;
     height: 35px; 
     margin-left:20px;
     float: right;

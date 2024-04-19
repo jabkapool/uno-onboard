@@ -61,3 +61,14 @@ button {
     color: red;
     margin-left: 10px;
 }
+
+
+.form-check-input {
+    display: inline-block;
+    
+}
+
+.form-check-label {
+    display: inline;
+}
+

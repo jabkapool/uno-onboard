@@ -28,10 +28,10 @@ export class CreateSensorsComponent implements OnInit {
   ngOnInit(): void {
     this.createSensorForm = this.formBuilder.group({
         name: new FormControl('', [Validators.required]),
-        isPrivate: new FormControl('', [Validators.required]),
+        isPrivate: new FormControl('true', ),
         description: new FormControl('', [Validators.required]),
         category: new FormControl('',[Validators.required]),
-        color: new FormControl('',[Validators.required]),
+        color: new FormControl('',),
       });
   }
 
@@ -39,16 +39,23 @@ export class CreateSensorsComponent implements OnInit {
     return this.createSensorForm.controls;
   }
 
+  changeCategory(e: any) {
+      this.createSensorForm.get('category')?.setValue(e.target.value, {
+      onlySelf: true
+    });
+  }
+
   onSubmit(): void {
     this.submitted = true;
     this.sensor.id = uuidv4();
     this.sensor.name = this.createSensorForm.get('name')?.value;
-    this.sensor.isPrivate = Boolean(this.createSensorForm.get('isPrivate')?.value);
+    this.sensor.isPrivate = this.createSensorForm.get('isPrivate')?.value === 'true' ? true : false;
     this.sensor.description = this.createSensorForm.get('description')?.value;
     this.sensor.category = this.createSensorForm.get('category')?.value;
     this.sensor.color = this.createSensorForm.get('color')?.value;
     this.sensor.userId = uuidv4();
 
+    
     if(this.createSensorForm.invalid) {
       return;
     }
@@ -69,11 +76,11 @@ export class CreateSensorsComponent implements OnInit {
                 }
                 catch {}
             }
-        })
+        });
     }
 
   goToUsersList(): void{
-    this.router.navigate(['../../listusers'], {relativeTo: this.route});
+    this.router.navigate(['../listsensors'], {relativeTo: this.route});
   }
 
 }
