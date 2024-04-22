@@ -11,7 +11,7 @@ namespace UnoWebApi.Domain.Entities {
         /// <summary>
         /// The Picture of the User in the system.
         /// </summary>
-        public string? Picture { get; set; }
+        public byte[]? Picture { get; set; }
 
         /// <summary
         /// The User Role Name.

@@ -1,8 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/app/data/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -10,6 +11,7 @@ import { User } from 'src/app/data/user';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent {
+  isUserAdmin: boolean = false;
  user: User = {
     id: '',
     name: '',
@@ -21,16 +23,30 @@ export class SideBarComponent {
 
   constructor(private router: Router, 
               private route: ActivatedRoute,
-              private usersService: UsersService) { }
+              private usersService: UsersService,
+              private authenticationService: AuthenticationService) { }
   
   goToListUsers(): void {
-    this.router.navigate(['listusers'], {relativeTo: this.route});
+    this.isUserAdmin = this.authenticationService.hasPermission(this.route.snapshot);
+    if(this.isUserAdmin) {
+      this.router.navigate(['listusers'], {relativeTo: this.route});
+    }
+    else {
+      alert('You do not have permission to access this page.');
+    }
+  }
+
+  goToSensors(): void {
+    this.router.navigate(['sensors/listsensors'], {relativeTo: this.route});
+  }
+
+  goToHomePage(): void {
+    this.router.navigate(['homepage']);
   }
 
   logout(): void {
-
     this.user.id = sessionStorage?.getItem('userId') as string;
-    
+
     if(this.user.id !== null) {
       this.usersService.logoff(this.user)
       .subscribe({

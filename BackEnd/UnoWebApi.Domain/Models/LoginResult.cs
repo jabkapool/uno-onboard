@@ -49,6 +49,6 @@
         ///<summary>
         ///The profile picture.
         ///</summary>
-        public string? Picture { get; set; }
+        public byte[]? Picture { get; set; }
     }
 }

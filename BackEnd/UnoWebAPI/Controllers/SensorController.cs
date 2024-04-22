@@ -18,8 +18,27 @@ namespace UnoWebAPI.Controllers {
         [Authorize(Roles = "Admin, User")]
         [HttpGet("GetAllSensors")]
         public async Task<ActionResult<IEnumerable<SensorsDto>>> GetSensors() {
-            
+
             IEnumerable<SensorsDto> sensorsDto = await _sensorsService.GetAllSensorsAsync();
+            return Ok(sensorsDto);
+        }
+
+        [Authorize(Roles ="Admin, User")]
+        [HttpGet("GetSensorById")]
+        public async Task<ActionResult<SensorsDto?>> GetSensorById(Guid sensorId) {
+
+            SensorsDto? sensorDto = await _sensorsService.GetSensorByIdAsync(sensorId);
+            if(sensorDto == null) {
+                return NotFound(new { NotFoundMessage = $"Sensor with Id: {sensorId} not found" });
+            }
+            return Ok(sensorDto);
+        }
+
+        [Authorize(Roles ="Admin, User")]
+        [HttpGet("ListSensors")]
+        public async Task<ActionResult<IEnumerable<SensorsDto?>?>> ListSensors(string searchQuery, string orderBy = "Name", int direction = 0) {
+
+            IEnumerable<SensorsDto?>? sensorsDto = await _sensorsService.ListSensorsAsync(searchQuery, orderBy, direction);
             return Ok(sensorsDto);
         }
 
@@ -34,13 +53,13 @@ namespace UnoWebAPI.Controllers {
             sensorDto.UserId = userId;
             sensorDto = await _sensorsService.CreateSensorAsync(sensorDto);
             return Ok(new { message = "Sensor Created",
-                            id = sensorDto.Id,
-                            name = sensorDto.Name,
-                            isPrivate = sensorDto.IsPrivate,
-                            category = sensorDto.Category,
-                            color = sensorDto.Color,
-                            description = sensorDto.Description,
-                            userId = sensorDto.UserId
+                id = sensorDto.Id,
+                name = sensorDto.Name,
+                isPrivate = sensorDto.IsPrivate,
+                category = sensorDto.Category,
+                color = sensorDto.Color,
+                description = sensorDto.Description,
+                userId = sensorDto.UserId
             });
         }
 
@@ -60,7 +79,7 @@ namespace UnoWebAPI.Controllers {
             return Ok($"Sensor {sensorDto.Name} Updated with Id {sensorDto.Id}");
         }
 
-        [Authorize(Roles="Admin, User")]
+        [Authorize(Roles = "Admin, User")]
         [HttpPut("AddOrRemoveSensorAsFavourite")]
         public async Task<ActionResult> AddOrRemoveSensorAsFavourite([FromBody] FavouriteSensorDto favouriteSensorsDto) {
 
@@ -82,7 +101,31 @@ namespace UnoWebAPI.Controllers {
             return Ok($"The sensor has been added/removed as favourite from User Id: {favouriteSensorsDto.UserId}, Sensor Id: {favouriteSensorsDto.SensorId}");
         }
 
-        private static Guid? GetUserId(ClaimsPrincipal user) {
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost("data/Add")]
+        public async Task<ActionResult> AddSensorData(Guid sensorId, [FromBody] IEnumerable<SensorDataDto> sensorDataDto) {
+
+            Guid? userId = GetUserId(User);
+            if(userId == null) {
+                return Unauthorized();
+            }
+            await _sensorsService.AddSensorDataAsync(sensorId, sensorDataDto);
+            return Ok(new { OkMessage = $"Data added to the Sensor {sensorId}" });
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("data/Get")]
+        public async Task<ActionResult<IEnumerable<SensorDataDto>>> GetSensorData(Guid sensorId, DateTime from, DateTime to) {
+
+            Guid? userId = GetUserId(User);
+            if(userId == null) {
+                return Unauthorized();
+            }
+            IEnumerable<SensorDataDto> sensorDataDto = await _sensorsService.GetSensorDataAsync(sensorId, from, to);
+            return Ok(sensorDataDto);
+    }
+
+    private static Guid? GetUserId(ClaimsPrincipal user) {
             if(user?.Identity?.IsAuthenticated == true) {
                 var claim = user.FindFirst(ClaimTypes.Sid);
                 if(claim != null) {

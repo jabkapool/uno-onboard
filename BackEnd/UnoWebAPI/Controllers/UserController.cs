@@ -22,7 +22,7 @@ namespace UnoWebAPI.Controllers {
         /// Get all the users in the system.
         /// </summary>
         /// <returns>All the users in the system.</returns>
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<ApplicationUserDto>>> GetAllUsers() {
 
@@ -35,7 +35,7 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="id">The Guid of the user.</param>
         /// <returns>The user object.</returns>
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetUserById/{id}")]
         public async Task<ActionResult<ApplicationUserDto?>> GetUserById(Guid id) {
 
@@ -53,7 +53,7 @@ namespace UnoWebAPI.Controllers {
         /// <param name="direction">0 for ascending, 1 for descending</param>
         /// <returns>A list of ordered users.</returns>
         /// </summary>
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("ListUsers")]
         public async Task<ActionResult<IEnumerable<ApplicationUserDto>>> ListUsers(string searchQuery, string orderBy = "Name", int direction = 0) {
 
@@ -69,7 +69,7 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="name">string with the name of the user.</param>
         /// <returns>The user object.</returns>
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetUserByName")]
         public async Task<ActionResult<IEnumerable<ApplicationUserDto?>>> GetUserByName(string name) {
 

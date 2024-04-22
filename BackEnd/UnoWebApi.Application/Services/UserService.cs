@@ -109,18 +109,15 @@ namespace UnoWebApi.Application.Services {
                 return (0, "User already exists!");
             }
 
-            //On creating user, set a default standard picture. In frontend user will be able to choose picture from file system by editing its profile.
-            const string filePath = @"C:\Temp\DefaultPicture.png";
-            byte[] pictureBytes = await File.ReadAllBytesAsync(filePath);
-            string strImageBase64 = Convert.ToBase64String(pictureBytes);
-
+            string? filePath = _configuration.GetSection("DefaultPicture:Path").Value;
+            byte[] pictureBytes = await File.ReadAllBytesAsync(filePath!);
 
             ApplicationUser user = new() {
                 Id = Guid.NewGuid(),
                 Name = model.Name,
                 UserName = GenericHelper.RemoveDiacritics(model.Name!),
                 Email = model.Email,
-                Picture = strImageBase64,
+                Picture = pictureBytes,
                 PhoneNumber = model.PhoneNumber,
                 Role = model.Role,
                 SecurityStamp = Guid.NewGuid().ToString()

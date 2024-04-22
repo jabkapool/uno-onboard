@@ -40,7 +40,7 @@ export class ListUsersComponent implements OnInit, OnDestroy{
     this.usersService.getAllUsers()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (usersList: any) => { 
+        next: (usersList: any) => {
           this.users = usersList;
         },
         error: (error: any) => {
