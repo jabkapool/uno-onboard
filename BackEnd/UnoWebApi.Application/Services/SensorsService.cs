@@ -73,6 +73,22 @@ namespace UnoWebApi.Application.Services {
             return _mapper.Map<SensorsDto>(sensor);
         }
 
+        public async Task<IEnumerable<FavouriteSensorDto?>?> GetFavouriteSensorsAsync(Guid userId) {
+
+            IEnumerable<FavouriteSensor?>? favouriteSensors = await _unoDbContext.FavouriteSensors.Where(fs => fs.UserId == userId).ToListAsync();
+            return _mapper.Map<IEnumerable<FavouriteSensorDto>>(favouriteSensors);
+        }
+
+        public async Task<bool> CheckIfSensorIsFavourite(Guid sensorId, Guid userId) {
+
+            FavouriteSensor? favouriteSensor = await _unoDbContext.FavouriteSensors
+                .FirstOrDefaultAsync(fs => fs.UserId == userId && fs.SensorId == sensorId);
+            if(favouriteSensor != null) {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> AddOrRemoveSensorAsFavouriteAsync(FavouriteSensorDto favouriteSensorDto) {
 
             FavouriteSensor favouriteSensor = _mapper.Map<FavouriteSensor>(favouriteSensorDto);
@@ -97,14 +113,6 @@ namespace UnoWebApi.Application.Services {
             }
             return true;
         }
-        public async Task<bool> CheckSensorExists(Guid sensorId) {
-
-            Sensors? sensor = await _unoDbContext.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);
-            if (sensor != null) {
-                return true;
-            }
-            return false;
-        }
 
         public async Task<bool> AddSensorDataAsync(Guid sensorId, IEnumerable<SensorDataDto> sensorDataDto) {
 
@@ -116,18 +124,59 @@ namespace UnoWebApi.Application.Services {
             try {
                 await _unoDbContext.SensorsData.AddRangeAsync(sensorData);
                 await _unoDbContext.SaveChangesAsync();
-            } catch (DbUpdateException ex) {
+            }
+            catch(DbUpdateException ex) {
                 throw new DbUpdateException("Error adding sensor data", ex);
             }
             return true;
         }
 
-        public async Task<IEnumerable<SensorDataDto>> GetSensorDataAsync(Guid sensorId, DateTime from, DateTime to) {
+        public async Task<IEnumerable<SensorDataDto>> GetSensorDataAsync(Guid sensorId, DateTime fromDate, DateTime toDate) {
 
             IEnumerable<SensorData> sensorData = await _unoDbContext.SensorsData
-                .Where(sd => sd.SensorId == sensorId && sd.TimeStamp >= from && sd.TimeStamp <= to)
-                .ToListAsync();
+                                                            .Where(sd => sd.SensorId == sensorId && 
+                                                                   sd.TimeStamp >= fromDate && 
+                                                                   sd.TimeStamp <= toDate)
+                                                            .Include(s => s.Sensor)
+                                                            .OrderBy(s => s.Sensor!.Name)
+                                                            .OrderBy(s => s.TimeStamp)
+                                                            .ToListAsync();
+
             return _mapper.Map<IEnumerable<SensorDataDto>>(sensorData);
         }
+     
+        public async Task<IEnumerable<FavouriteSensorsDataDto>> GetFavouriteSensorsDataAsync(Guid userId, DateTime fromDate, DateTime toDate) {
+
+            IEnumerable<FavouriteSensor> favouriteSensors = await _unoDbContext.FavouriteSensors.Where(fs => fs.UserId == userId).ToListAsync();
+           
+            List<FavouriteSensorsDataDto> sensorDataDtoList = new();
+
+            foreach(FavouriteSensor fs in favouriteSensors) {
+                var sensorData = await _unoDbContext.SensorsData.Where(sd => 
+                                                                            fs.SensorId == sd.SensorId && 
+                                                                            sd.TimeStamp >= fromDate && 
+                                                                            sd.TimeStamp <= toDate)
+                                                                 .Include(s => s.Sensor)
+                                                                 .OrderBy(s => s.TimeStamp)
+                                                                 .ToListAsync();
+
+                sensorDataDtoList.Add(new FavouriteSensorsDataDto {
+                    SensorId = fs.SensorId,
+                    SensorDataDto = _mapper.Map<IEnumerable<SensorDataDto>>(sensorData)
+                });
+
+            }
+            return sensorDataDtoList;
+        }
+
+        public async Task<bool> CheckSensorExists(Guid sensorId) {
+
+            Sensors? sensor = await _unoDbContext.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);
+            if(sensor != null) {
+                return true;
+            }
+            return false;
+        }
+
     }
 }

@@ -1,4 +1,4 @@
 export interface SensorData {
-    TimeStamp: Date;
-    NumericValue: number;
+    timeStamp: Date;
+    numericValues: number;
 }

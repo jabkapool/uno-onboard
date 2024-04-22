@@ -3,7 +3,7 @@ import { User } from 'src/app/data/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users.service';
 import { Subject, takeUntil } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-user-details',
@@ -14,11 +14,10 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   user?: User;
   private unsubscribe$ = new Subject<void>();
   image: any;
-
+  
   constructor(private router:Router,  
               private route: ActivatedRoute,
-              private userService: UsersService,
-            private sanitizer: DomSanitizer) { }
+              private userService: UsersService) { }
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.unsubscribe$))
@@ -29,7 +28,8 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (user: User) => {
               this.user = user;
-              this.image = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + this.user.picture);
+              var originalBase64ImageStr = Buffer.from(this.user.picture).toString('utf8');
+              this.image = 'data:image/png;base64,' + originalBase64ImageStr;
             },
             error: (error: any) => {
               console.log(error);
@@ -41,6 +41,10 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  editUser(id: string): void {
+    this.router.navigate(['../../edituser', id], {relativeTo: this.route});
   }
 
 }

@@ -172,11 +172,7 @@ namespace UnoWebAPI.Controllers {
                 if (!ModelState.IsValid) {
                     return BadRequest("Invalid payload!");
                 }
-                ApplicationUserDto? applicationUserDto = await _userService.GetUserByIdAsync(userDto.Id);
-                if (applicationUserDto == null) {
-                    return NotFound("User not found!");
-                }
-                applicationUserDto = await _userService.UpdateUserAsync(userDto);
+                ApplicationUserDto? applicationUserDto = await _userService.UpdateUserAsync(userDto);
                 if (applicationUserDto == null) {
                     return NotFound("Could not update user!");
                 }

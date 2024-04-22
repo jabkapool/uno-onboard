@@ -4,6 +4,7 @@ import { HomePageComponent } from './home-page.component';
 import { CreateUsersComponent } from './users/create-users/create-users.component';
 import { ListUsersComponent } from './users/list-users/list-users.component';
 import { UserDetailsComponent } from './users/user-details/user-details.component';
+import { EditUsersComponent } from './users/edit-users/edit-users.component';
 import { AuthGuard } from '../helpers/auth.guard';
 
 const routes: Routes = [
@@ -31,6 +32,10 @@ const routes: Routes = [
           {
             path: 'userdetails/:id',
             component: UserDetailsComponent
+          },
+          {
+            path: 'edituser/:id',
+            component: EditUsersComponent
           }
       ]
   }

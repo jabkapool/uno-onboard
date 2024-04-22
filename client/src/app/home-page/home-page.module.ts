@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { CreateUsersComponent } from './users/create-users/create-users.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserDetailsComponent } from './users/user-details/user-details.component';
+import { EditUsersComponent } from './users/edit-users/edit-users.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UserDetailsComponent } from './users/user-details/user-details.componen
     TopBarComponent,
     ListUsersComponent,
     CreateUsersComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    EditUsersComponent
   ],
   imports: [
     CommonModule,

@@ -234,10 +234,17 @@ namespace UnoWebApi.Application.Services {
         /// </summary>
         public async Task<ApplicationUserDto?> UpdateUserAsync(ApplicationUserDto userDto) {
 
-            ApplicationUser user = _mapper.Map<ApplicationUser>(userDto);
-            IdentityResult identityResult = await _userManager.UpdateAsync(user);
-            ApplicationUserDto? applicationUserDto = _mapper.Map<ApplicationUserDto>(await _userManager.FindByEmailAsync(user.Email!));
-            return identityResult.Succeeded ? applicationUserDto : null;
+            ApplicationUser? existingUser = await _userManager.FindByIdAsync(userDto.Id.ToString());
+            if (existingUser == null) {
+                return null;
+            }
+            existingUser.Name = userDto.Name;
+            existingUser.PhoneNumber = userDto.PhoneNumber;
+            existingUser.Picture = userDto.Picture;
+            existingUser.Role = userDto.Role;
+
+            IdentityResult identityResult = await _userManager.UpdateAsync(existingUser);
+            return identityResult.Succeeded ? _mapper.Map<ApplicationUserDto>(existingUser) : null;
         }
 
         /// <summary>

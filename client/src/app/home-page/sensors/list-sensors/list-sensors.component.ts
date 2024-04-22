@@ -14,13 +14,13 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./list-sensors.component.css']
 })
 export class ListSensorsComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
   isUserAdmin: boolean = false;
   sensors: Sensor[] = [];
   searchText!: string;
   noData: boolean = false;
   noDataMessage: string = 'There are no sensors with that name or category';
   displayedColumns: string[] = ['nome', 'category', 'status'];
+  private unsubscribe$ = new Subject<void>();
  
   constructor(private sensorService: SensorsService, 
               private router: Router, 

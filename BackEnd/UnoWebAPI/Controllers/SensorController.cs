@@ -23,7 +23,7 @@ namespace UnoWebAPI.Controllers {
             return Ok(sensorsDto);
         }
 
-        [Authorize(Roles ="Admin, User")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("GetSensorById")]
         public async Task<ActionResult<SensorsDto?>> GetSensorById(Guid sensorId) {
 
@@ -34,7 +34,7 @@ namespace UnoWebAPI.Controllers {
             return Ok(sensorDto);
         }
 
-        [Authorize(Roles ="Admin, User")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("ListSensors")]
         public async Task<ActionResult<IEnumerable<SensorsDto?>?>> ListSensors(string searchQuery, string orderBy = "Name", int direction = 0) {
 
@@ -80,7 +80,31 @@ namespace UnoWebAPI.Controllers {
         }
 
         [Authorize(Roles = "Admin, User")]
-        [HttpPut("AddOrRemoveSensorAsFavourite")]
+        [HttpGet("GetFavouriteSensors")]
+        public async Task<ActionResult<IEnumerable<FavouriteSensorDto?>?>> GetFavouriteSensors() {
+
+            Guid? userId = GetUserId(User);
+            if(userId == null) {
+                return Unauthorized();
+            }
+            IEnumerable<FavouriteSensorDto?>? favouriteSensorsDto = await _sensorsService.GetFavouriteSensorsAsync(userId.Value);
+            return Ok(favouriteSensorsDto);
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("CheckIfSensorIsFavourite")]
+        public async Task<ActionResult> CheckIfSensorIsFavourite(Guid sensorId) {
+
+            Guid? userId = GetUserId(User);
+            if(userId == null) {
+                return Unauthorized();
+            }
+            bool isFavourite = await _sensorsService.CheckIfSensorIsFavourite(sensorId, userId.Value);
+            return Ok(new { IsSensorFavourite = isFavourite });
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost("AddOrRemoveSensorAsFavourite")]
         public async Task<ActionResult> AddOrRemoveSensorAsFavourite([FromBody] FavouriteSensorDto favouriteSensorsDto) {
 
             //Validate user and check sensor exists
@@ -115,17 +139,31 @@ namespace UnoWebAPI.Controllers {
 
         [Authorize(Roles = "Admin, User")]
         [HttpGet("data/Get")]
-        public async Task<ActionResult<IEnumerable<SensorDataDto>>> GetSensorData(Guid sensorId, DateTime from, DateTime to) {
+        public async Task<ActionResult<IEnumerable<SensorDataDto>>> GetSensorData(Guid sensorId, DateTime fromDate, DateTime toDate) {
+
+            IEnumerable<SensorDataDto> sensorDataDto = await _sensorsService.GetSensorDataAsync(sensorId, fromDate, toDate);
+            return Ok(sensorDataDto);
+        }
+
+        [Authorize(Roles ="Admin, User")]
+        [HttpGet("data/GetFavouriteSensorsData")]
+        public async Task<ActionResult<IEnumerable<SensorDataDto>>> GetFavouriteSensorsData(DateTime fromDate, DateTime toDate) {
 
             Guid? userId = GetUserId(User);
             if(userId == null) {
                 return Unauthorized();
             }
-            IEnumerable<SensorDataDto> sensorDataDto = await _sensorsService.GetSensorDataAsync(sensorId, from, to);
+            if(userId == null) {
+                return Unauthorized();
+            }
+            IEnumerable<FavouriteSensorsDataDto>? sensorDataDto = await _sensorsService.GetFavouriteSensorsDataAsync(userId.Value, fromDate, toDate);
+            if(sensorDataDto == null) {
+                return NotFound(new { NotFoundMessage = $"Favourite Sensors for User Id: {userId} not found" });
+            }
             return Ok(sensorDataDto);
-    }
+        }
 
-    private static Guid? GetUserId(ClaimsPrincipal user) {
+        private static Guid? GetUserId(ClaimsPrincipal user) {
             if(user?.Identity?.IsAuthenticated == true) {
                 var claim = user.FindFirst(ClaimTypes.Sid);
                 if(claim != null) {

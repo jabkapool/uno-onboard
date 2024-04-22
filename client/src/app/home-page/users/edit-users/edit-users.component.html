@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <div class="row">
+        
+        <form [formGroup]="userEditForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div class="top">
+                    <span class="title">Edit User</span>
+                    <span class="buttonSave">
+                        <button type="submit">Save</button>
+                    </span>
+                    <span class="buttonCancel">
+                        <button class="grey" (click)="cancelEditUser()">Cancel</button>
+                    </span>
+                </div>
+                <div class="medium-top">
+                    <label for="name">Name:</label><span class="required">Mandatory</span>
+                    <div><input id="name" type="text" class="form-roundred inputForm" formControlName="name" value="{{user.name}}"></div>
+                    <div *ngIf="submitted && userEditForm.controls['name'].errors?.['required']">Name is required.</div>
+                </div>
+
+
+                <div class="medium-bottom">
+
+                    <div class="mb-one">
+                        <label for="phoneNumber">Phone Number:</label><span class="required">Mandatory</span>
+                        <div><input id="phoneNumber" type="text" class="form-roundred inputForm" formControlName="phoneNumber" value="{{user.phoneNumber}}"></div>
+                        <div *ngIf="submitted && userEditForm.controls['phoneNumber'].errors?.['required']">Phone Number is required.</div>
+                    </div>
+                    
+                    <div class="mb-two">
+                        <label for="role">Role:</label><span class="required">Mandatory</span>
+                        <div>
+                        <select id="role" class="form-rounded inputForm" formControlName="role" (change)="changeRole($event)">
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+
+                    <div>
+                        <span>Picture:</span>
+                        <br/>
+                        <br/>
+                        <div>
+                            <img [src]="image" alt="user image" class="userImage">
+                        </div>
+                        <div>
+                            <br/>
+                            <label for="picture" class="pictureUpload"> Upload Picture </label>
+                            <input type="file" id="picture" name="avatar" (change)="onFileChange($event)" accept="image/png" />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div *ngIf="errorFlag" class="errorMessage">
+                {{errorMessage}}
+            </div>
+        </form>
+    </div>
+</div>

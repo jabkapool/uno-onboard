@@ -3,7 +3,8 @@
         <div *ngIf="user">
             <div class="col-md-12 userDetails">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <span class="edit" (click)="editUser(user.id)"><img src="assets/pictures/users/EditUser.png"/></span>
+                    <label for="name">Name</label>                    
                     <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" required disabled="">
                 </div>
                 <br/>
