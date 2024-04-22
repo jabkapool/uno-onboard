@@ -21,6 +21,19 @@ namespace UnoWebApi.Application.Services {
             return sensorsDto;
         }
 
+        public async Task<IEnumerable<SensorsDto>> GetSensorsByUserAsync(ApplicationUserDto user) {
+
+            IEnumerable<SensorsDto> sensorsDto;
+            if(user.Role == "Admin") {
+                sensorsDto = _mapper.Map<IEnumerable<SensorsDto>>(await _unoDbContext.Sensors.ToListAsync());
+                return sensorsDto;
+            }
+            sensorsDto = _mapper.Map<IEnumerable<SensorsDto>>(await _unoDbContext.Sensors.Where(s => s.UserId == user.Id ||
+                                                                                                     s.IsPrivate == false)
+                                                                                          .ToListAsync());
+            return sensorsDto;
+        }
+
         public async Task<SensorsDto?> GetSensorByIdAsync(Guid sensorId) {
 
             Sensors? sensor = await _unoDbContext.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);

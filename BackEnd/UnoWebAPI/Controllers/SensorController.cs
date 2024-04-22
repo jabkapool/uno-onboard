@@ -11,8 +11,10 @@ namespace UnoWebAPI.Controllers {
     public class SensorController: ControllerBase {
 
         private readonly ISensorsService _sensorsService;
-        public SensorController(ISensorsService sensorsService) {
+        private readonly IUserService _userService;
+        public SensorController(ISensorsService sensorsService, IUserService userService) {
             _sensorsService = sensorsService;
+            _userService = userService;
         }
 
         [Authorize(Roles = "Admin, User")]
@@ -20,6 +22,21 @@ namespace UnoWebAPI.Controllers {
         public async Task<ActionResult<IEnumerable<SensorsDto>>> GetSensors() {
 
             IEnumerable<SensorsDto> sensorsDto = await _sensorsService.GetAllSensorsAsync();
+            return Ok(sensorsDto);
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("GetListOfSensorsByUser")]
+        public async Task<ActionResult<IEnumerable<SensorsDto>>> GetSensorsByUser(Guid userId) {
+            ApplicationUserDto? user = await _userService.GetUserByIdAsync(userId);
+            if(user == null) {
+                return NotFound(new { UserFoundMessage = $"User with Id: {userId} not found" });
+            }
+
+            IEnumerable<SensorsDto> sensorsDto = await _sensorsService.GetSensorsByUserAsync(user);
+            if(!sensorsDto.Any()) {
+                return NotFound(new { SensorsNotFoundMessage = $"Sensors for User Id: {userId} not found" });
+            }
             return Ok(sensorsDto);
         }
 
