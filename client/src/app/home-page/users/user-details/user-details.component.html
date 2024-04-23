@@ -2,29 +2,33 @@
     <div class="row">
         <div *ngIf="user">
             <div class="col-md-12 userDetails">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" required disabled="">
-                </div>
-                <br/>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email" required disabled>
-                </div>
-                <br/>
-                <div class="form-group">
-                    <label for="phoneNumber">Phone Number</label>
-                    <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="user.phoneNumber" name="phoneNumber" required disabled>
-                </div>
-                <br/>
-                <div class="form-group">
-                    <label for="role">Role</label>
-                    <input type="text" class="form-control" id="role" [(ngModel)]="user.role" name="role" required disabled>
-                </div> 
-                <br/>
-                <div>
-                    <img [src]="image" alt="user image" class="userImage">
-                </div>
+                <form [formGroup]="userDetailsForm">
+                    <div>
+                        <span class="edit" (click)="editUser(user.id)"><img src="assets/pictures/users/EditUser.png"/></span>
+                        <label for="name">Name</label>
+                        <input id="name" type="text" class="form-rounded inputForm" formControlName="name">
+                    </div>
+                    <br/>
+                    <div>
+                        <label for="email">Email</label>
+                        <input id="email" type="email" type="text" class="form-rounded inputForm" formControlName="email">
+
+                    </div>
+                    <br/>
+                    <div>
+                        <label for="phoneNumber">Phone Number</label>
+                        <input id="phoneNumber" type="text" class="form-rounded inputForm" formControlName="phoneNumber">
+                    </div>
+                    <br/>
+                    <div>
+                        <label for="role">Role</label>
+                        <input id="role" type="text" class="form-rounded inputForm" formControlName="role">
+                    </div> 
+                    <br/>
+                    <div>
+                        <img [src]="image" id="picture" alt="user image" class="userImage">
+                    </div>
+                </form>
             </div>
         </div>
     </div>

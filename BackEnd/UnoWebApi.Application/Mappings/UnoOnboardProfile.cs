@@ -9,7 +9,12 @@ namespace UnoWebApi.Application.Mappings {
             CreateMap<ApplicationUser, ApplicationUserDto>().ReverseMap();
             CreateMap<Sensors, SensorsDto>().ReverseMap();
             CreateMap<FavouriteSensor, FavouriteSensorDto>().ReverseMap();
-            CreateMap<SensorData, SensorDataDto>().ReverseMap();
+
+            CreateMap<SensorData, SensorDataDto>()
+                .ForMember(dest => dest.SensorName, opt => opt.MapFrom(src => src.Sensor!.Name))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Sensor!.Category));
+            CreateMap<SensorDataDto, SensorData>()
+                .ForMember(dest => dest.Sensor, opt => opt.Ignore());
         }
     }
 }

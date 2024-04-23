@@ -1,5 +1,4 @@
-﻿
-namespace UnoWebApi.Application.Dtos {
+﻿namespace UnoWebApi.Application.Dtos {
     public class SensorDataDto {
 
         /// <summary>
@@ -21,5 +20,15 @@ namespace UnoWebApi.Application.Dtos {
         /// Sensor Data composed of numeric values.
         /// </summary>
         public double NumericValues { get; set; }
+
+        /// <summary>
+        /// The name of the Sensor to which the SensorData belongs to.
+        /// </summary>
+        public string? SensorName { get; set; }
+
+        /// <summary>
+        /// The Description of the Sensor to which the SensorData belongs to.
+        /// </summary>
+        public string? Category { get; set; }
     }
 }

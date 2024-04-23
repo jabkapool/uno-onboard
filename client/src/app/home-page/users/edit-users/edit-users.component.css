@@ -1,0 +1,134 @@
+.container-fluid {
+    height: 415px;
+    padding: 1px;
+    margin-left: 58px;
+}
+
+.form-group {
+    margin: 0 0 0 60px;
+}
+
+.top {
+    margin: 20px 0 0 0;
+}
+
+.title {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.buttonCancel {
+    float: right;
+    padding-right:10px;
+}
+
+.buttonSave {
+    float: right;
+    padding-right:200px;
+}
+
+.edit {
+    float: right;
+    padding-right:80px;
+}
+
+button {   
+    background-color: #0902D4;
+    color: #fff; 
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 4px;
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 150px;
+    height: 40px; 
+}
+
+.grey {
+    background-color: transparent;
+    border: #0902D4 1px solid;
+    color:  #0902D4;
+}
+
+.medium-top {
+    margin: 20px 0 0 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid black;
+}
+
+.category {
+    font-size: 1.5em;
+}
+
+.category-desc {
+    font-size: 1.5em;
+    margin-left:20px;
+}
+
+.private {
+    margin: 0 0 0 100px;
+}
+
+.medium-bottom {
+    display: inline-block;
+    margin: 20px 0 0 0;
+    min-height: 80px;
+}
+
+.mb-one {
+    display: inline-block;
+}
+
+.mb-two {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.mb-three {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.required {
+    color: red;
+    font-size: xx-small;
+    padding-left:10px
+}
+
+.inputForm {
+    width: 400px;
+    height: 35px;
+    padding: 10px 0 0 5px;
+}
+
+.colorText {
+    width: 180px;
+}
+
+.userImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.pictureUpload {
+    border: #0902D4 1px solid;
+    color:  #0902D4;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #0902D4;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 150px;
+    height: 40px; 
+  }

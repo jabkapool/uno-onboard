@@ -7,7 +7,7 @@
                 <div>
                     <label for="name">Name:</label>
                     <input id="name" type="text" class="form-roundred inputForm" formControlName="name"><span class="required">*</span>
-                    <div *ngIf="submitted && formControls['name'].errors?.['required']">Name is required.</div>
+                    <div *ngIf="submitted && createSensorForm.controls['name'].errors?.['required']">Name is required.</div>
                 </div>
                 <br/>
 
@@ -22,7 +22,7 @@
                 <div>
                     <label for="description">Description:</label>
                     <input id="description" type="text" class="form-rounded inputForm" formControlName="description">
-                    
+                    <div *ngIf="submitted && createSensorForm.controls['description'].errors?.['required']">Description is required.</div>
                 </div>
                 <br/>
 
@@ -33,10 +33,10 @@
                         <option value="Humidity">Humidity</option>
                         <option value="Sound">Sound</option>
                         <option value="Visibility">Visibility</option>
-                        <option value="Polution">Polution</option>
+                        <option value="Pollution">Pollution</option>
                     </select>  
                         <span class="required">*</span>
-                    <div *ngIf="submitted && formControls['category'].errors?.['required']">Category is required.</div>
+                    <div *ngIf="submitted && createSensorForm.controls['category'].errors?.['required']">Category is required.</div>
                 </div>
                 <br/>
 
@@ -46,6 +46,8 @@
                         <input id="color2" class="form-check-input" type="radio" formControlName="color" value="Red" style="background-color: red; color:red; width:20px; height: 20px;">
                         <input id="color3" class="form-check-input" type="radio" formControlName="color" value="Green" style="background-color: green; color: green; width:20px; height: 20px;">
                         <input id="color4" class="form-check-input" type="radio" formControlName="color" value="Yellow" style="background-color: yellow; color: yellow; width:20px; height: 20px;">
+                        <span class="required">*</span>
+                        <div *ngIf="submitted && createSensorForm.controls['color'].errors?.['required']">Color is required.</div>
                 </div>
                 <br/> 
                 <div>

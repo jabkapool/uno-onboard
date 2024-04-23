@@ -76,3 +76,12 @@
     min-width: 60px;
     font-weight: bold;
 }
+
+.favourite {
+    padding-top:20px;
+}
+
+.favSensorMessage {
+    margin-left: 50px;
+    color: red;
+}

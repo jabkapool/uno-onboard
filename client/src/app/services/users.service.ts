@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'environments/environment';
+import { HttpHeaders } from '@angular/common/http';
 import { User } from '../data/user';
 
 @Injectable({
@@ -9,6 +10,10 @@ import { User } from '../data/user';
 })
 export class UsersService {
   private readonly usersUrl = environment.services.users;
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
   constructor(private http: HttpClient) { }
 
   public getAllUsers(): Observable<User> {
@@ -37,5 +42,9 @@ export class UsersService {
     return this.http.delete(this.usersUrl+'/DeleteUserById/'+id);
   }
 
+  public updateUser(user: User): Observable<any> {
+    const url = `${this.usersUrl}/UpdateUser`;
+    return this.http.put(url, user, this.httpOptions);
+  }
 
 }

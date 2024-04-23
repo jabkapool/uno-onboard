@@ -6,4 +6,5 @@ export interface Sensor {
     category: string,
     color: string,
     userId: string
+    isFavourite: boolean
 }

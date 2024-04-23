@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnoWebApi.Domain", "UnoWebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnoWebApi.Infrastructure", "UnoWebApi.Infrastructure\UnoWebApi.Infrastructure.csproj", "{623F42F7-261E-4E9E-BCBD-A196E01A1D87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoWebApi.Application", "UnoWebApi.Application\UnoWebApi.Application.csproj", "{FBEC0BF5-45AB-471E-9967-0A9C86B5A94C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnoWebApi.Application", "UnoWebApi.Application\UnoWebApi.Application.csproj", "{FBEC0BF5-45AB-471E-9967-0A9C86B5A94C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoWebApi.UnitTests", "UnoWebApi.UnitTests\UnoWebApi.UnitTests.csproj", "{EA7C6246-EC0F-40AC-8698-282B20B5757C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FBEC0BF5-45AB-471E-9967-0A9C86B5A94C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBEC0BF5-45AB-471E-9967-0A9C86B5A94C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBEC0BF5-45AB-471E-9967-0A9C86B5A94C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA7C6246-EC0F-40AC-8698-282B20B5757C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA7C6246-EC0F-40AC-8698-282B20B5757C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA7C6246-EC0F-40AC-8698-282B20B5757C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA7C6246-EC0F-40AC-8698-282B20B5757C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

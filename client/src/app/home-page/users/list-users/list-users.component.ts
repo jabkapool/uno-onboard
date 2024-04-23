@@ -74,6 +74,15 @@ export class ListUsersComponent implements OnInit, OnDestroy{
     }
   }
 
+  editUser(id: string): void {
+    if(this.isUserAdmin) {
+      this.router.navigate(['../edituser', id], {relativeTo: this.route});
+    }
+    else {
+      alert('You do not have permission to edit this user');
+    }
+  }
+
   checkIfUserIsAdmin(): boolean {
     if(sessionStorage.getItem('role') === 'Admin') {
       return true;

@@ -40,6 +40,10 @@ export class SideBarComponent {
     this.router.navigate(['sensors/listsensors'], {relativeTo: this.route});
   }
 
+  goToDashboards(): void {
+    this.router.navigate(['dashboards/listdashboards'], {relativeTo: this.route});
+  }
+
   goToHomePage(): void {
     this.router.navigate(['homepage']);
   }
