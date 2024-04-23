@@ -43,20 +43,33 @@ namespace UnoWebApi.Application.Services {
             return _mapper.Map<SensorsDto>(sensor);
         }
 
-        public async Task<IEnumerable<SensorsDto?>?> ListSensorsAsync(string searchQuery, string orderBy, int direction) {
+        public async Task<IEnumerable<SensorsDto?>?> ListSensorsAsync(ApplicationUserDto user, string searchQuery, string orderBy, int direction) {
 
-            IEnumerable<Sensors?>? sensors = await _unoDbContext.Sensors
-                .Where(s => s.Name!.Contains(searchQuery) || s.Description!.Contains(searchQuery) || s.Category!.Contains(searchQuery))
-                .ToListAsync();
-            if(orderBy == "Name") {
-                sensors = direction == 0 ? sensors.OrderBy(s => s!.Name) : sensors.OrderByDescending(s => s!.Name);
-            } 
-            else if(orderBy == "Description") {
-                sensors = direction == 0 ? sensors.OrderBy(s => s!.Description) : sensors.OrderByDescending(s => s!.Description);
+            IQueryable<Sensors> sensorsQuery = _unoDbContext.Sensors;
+
+            if(!string.IsNullOrWhiteSpace(searchQuery) && !searchQuery.Equals("undefined")) {
+                sensorsQuery = sensorsQuery.Where(s => s.Name!.Contains(searchQuery) ||
+                                                       s.Description!.Contains(searchQuery) ||
+                                                       s.Category!.Contains(searchQuery));
             }
-            else if ((orderBy == "Category")) {
-                sensors = direction == 0 ? sensors.OrderBy(s => s!.Category) : sensors.OrderByDescending(s => s!.Category);
+
+            if(user.Role != "Admin") {
+                sensorsQuery = sensorsQuery.Where(s => s.UserId == user.Id || s.IsPrivate == false);
             }
+
+            switch(orderBy) {
+                case "Name":
+                    sensorsQuery = direction == 0 ? sensorsQuery.OrderBy(s => s.Name) : sensorsQuery.OrderByDescending(s => s.Name);
+                    break;
+                case "Description":
+                    sensorsQuery = direction == 0 ? sensorsQuery.OrderBy(s => s.Description) : sensorsQuery.OrderByDescending(s => s.Description);
+                    break;
+                case "Category":
+                    sensorsQuery = direction == 0 ? sensorsQuery.OrderBy(s => s.Category) : sensorsQuery.OrderByDescending(s => s.Category);
+                    break;
+            }
+
+            List<Sensors> sensors = await sensorsQuery.ToListAsync();
             return _mapper.Map<IEnumerable<SensorsDto>>(sensors);
         }
 

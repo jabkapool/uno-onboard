@@ -20,6 +20,8 @@ export class ListSensorsComponent implements OnInit, OnDestroy {
   noData: boolean = false;
   noDataMessage: string = 'There are no sensors with that name or category';
   displayedColumns: string[] = ['nome', 'category', 'status'];
+  searchCategory: string = 'Name';
+  orderBy: number = 0;
   private unsubscribe$ = new Subject<void>();
  
   constructor(private sensorService: SensorsService, 
@@ -29,7 +31,7 @@ export class ListSensorsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isUserAdmin = this.authenticationService.hasPermission(this.route.snapshot);
-    this.showAllSensors();
+    this.showSensorsByUser();
   }
 
   ngOnDestroy(): void {
@@ -37,22 +39,8 @@ export class ListSensorsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  showAllSensors(): void {
-    this.sensorService.getAllSensors()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: (sensorsList: Sensor[]) => { 
-          this.sensors = sensorsList;
-        },
-        error: (error: any) => {
-          console.log(error);
-          this.sensors = [];
-        }
-      });
-  } 
-
-  filterSensors(): void {
-    this.sensorService.listSensors(this.searchText, 'Name', 0)
+  searchSensors(): void {
+    this.sensorService.listSensors(this.searchText, this.searchCategory, this.orderBy)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (sensorsList: any) => {
@@ -66,17 +54,35 @@ export class ListSensorsComponent implements OnInit, OnDestroy {
       });
   }
 
+  onOrderChange(e: any) {
+    this.searchCategory = e.target.value;
+  }
+
+  onAscendingChange(e: any) {
+    this.orderBy = e.target.value;
+  }
+
   createSensor(): void {
-    if(this.isUserAdmin) {
-      this.router.navigate(['../createsensor'], {relativeTo: this.route});
-    }
-    else {
-      alert('You do not have permission to create a new sensor');
-    }
+    this.router.navigate(['../createsensor'], {relativeTo: this.route});
   }
 
   goToSensorDetails(id: string): void {
     this.router.navigate(['../sensordetails', id], {relativeTo: this.route});
+  }
+
+  showSensorsByUser(): void {
+    let userId = sessionStorage?.getItem('userId') as string;
+    this.sensorService.getSensorsByUser(userId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (sensorsList: Sensor[]) => {
+          this.sensors = sensorsList;
+        },
+        error: (error: any) => {
+          console.log(error);
+          this.sensors = [];
+        }
+      });
   }
 
 }

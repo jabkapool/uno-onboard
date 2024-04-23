@@ -27,6 +27,8 @@ export class ListDashboardsComponent implements OnInit, OnDestroy {
   }];
   series: any[] = [];
   legends: any[] = [];
+  displayWarningMessage: boolean = false;
+  warningMessage: string = 'You don\'t have favourite sensors yet.';
   private unsubscribe$ = new Subject<void>();
  
   constructor(private sensorService: SensorsService, 
@@ -46,6 +48,10 @@ export class ListDashboardsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (sensorsDataList: FavouriteSensorsDataDto[] ) => {
+          if(sensorsDataList.length == 0){
+            this.displayWarningMessage = true;
+            return;
+          }
           this.favouriteSensorsDataDto = sensorsDataList;
 
           this.favouriteSensorsDataDto.forEach(x => {

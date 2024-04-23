@@ -2,6 +2,11 @@
     <div class="mGraph-wrapper">
         <div class="mGraph" id="mGraph_sale"></div>
       </div>
+
+      <div *ngIf="displayWarningMessage" class="warningMessage">
+        <div class="WarningMessageText">
+          <p>{{warningMessage}}</p>
+        </div>
     
 </div>
-    
+

@@ -18,3 +18,9 @@
   height: 100%;
   overflow: hidden;
 }
+
+.warningMessage {
+  font-size: 1.5em;
+  color: red;
+  padding-left: 50px;
+}
