@@ -49,7 +49,7 @@ export class SensorsService {
 
   public addSensorData(sensorId: string, sensorData: SensorData[]): Observable<any> {
     const url = `${this.sensorsUrl}/data/Add`;
-    return this.http.post(url+'?sensorId='+sensorId, sensorData, this.httpOptions);
+    return this.http.post(`${url}?sensorId=${sensorId}`, sensorData, this.httpOptions);
   }
 
   public updateSensor(sensor: Sensor): Observable<any> {
@@ -64,11 +64,10 @@ export class SensorsService {
 
   public checkIfSensorIsFavourite(sensorId: string): Observable<IsSensorFavourite> {
     const url = `${this.sensorsUrl}/CheckIfSensorIsFavourite`; 
-    return this.http.get<IsSensorFavourite>(url+'?sensorId='+sensorId);
+    return this.http.get<IsSensorFavourite>(`${url}?sensorId=${sensorId}`);
   }
 
   public getFavouriteSensorsData(fromDate: Date, toDate: Date): Observable<FavouriteSensorsDataDto[]> {
-    console.log(fromDate);
     const params = new HttpParams()
                     .set('fromDate', fromDate.toISOString())
                     .set('toDate', toDate.toISOString());

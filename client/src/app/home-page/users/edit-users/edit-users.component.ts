@@ -59,17 +59,17 @@ export class EditUsersComponent implements OnInit, OnDestroy {
   }
 
   setFormValues(): void {
-    this.userEditForm.get('name')?.setValue(this.user.name);
-    this.userEditForm.get('phoneNumber')?.setValue(this.user.phoneNumber);
-    this.userEditForm.get('role')?.setValue(this.user.role);
+    this.userEditForm.setValue({
+      name: this.user.name,
+      phoneNumber: this.user.phoneNumber,
+      role: this.user.role
+    });
   }  
 
   onSubmit(): void {
 
     this.submitted = true;
-    this.user.name = this.userEditForm.get('name')?.value;
-    this.user.phoneNumber = this.userEditForm.get('phoneNumber')?.value;
-    this.user.role = this.userEditForm.get('role')?.value;
+    this.user = this.userEditForm.value;
     let binary = '';
     let bytes = this.imageArray;
     let len = bytes.byteLength;
@@ -87,11 +87,9 @@ export class EditUsersComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: () => {
-          console.log('User updated successfully');
           this.router.navigate(['../../listusers'], {relativeTo: this.route});
         },
         error: (error: any) => {
-          console.log('Error updating user');
           console.log(error)
         }
     });
@@ -124,7 +122,6 @@ export class EditUsersComponent implements OnInit, OnDestroy {
       arrayBufferReader.readAsArrayBuffer(file);
       arrayBufferReader.onloadend = () => {
         this.imageArray = new Uint8Array(arrayBufferReader.result as ArrayBuffer);
-        console.log(this.imageArray);
       };
     }
   }

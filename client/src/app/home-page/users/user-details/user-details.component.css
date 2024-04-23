@@ -25,3 +25,9 @@
     float: right;
     padding-right:80px;
 }
+
+.form-rounded {
+    display: block;
+    border-radius: 1.25rem;
+    min-width: 300px;
+}

@@ -42,8 +42,6 @@ export class ListDashboardsComponent implements OnInit, OnDestroy {
   }
 
   showFavouriteSensorsData(): void {
-    console.log(this.fromDate)
-    console.log(this.toDate)
     this.sensorService.getFavouriteSensorsData(this.fromDate, this.toDate)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
@@ -55,7 +53,7 @@ export class ListDashboardsComponent implements OnInit, OnDestroy {
               legend: x.sensorDataDto[0].sensorName,
               dataPoints: x.sensorDataDto.map(y => y.numericValues)
             }];
-          });       
+          });
  
           let stackchart = echarts.init($(this.elm.nativeElement).find('#mGraph_sale')[0]);
           this.data.forEach( x => {

@@ -23,7 +23,7 @@
 
         /// <summary>
         /// The name of the Sensor to which the SensorData belongs to.
-        /// 
+        /// </summary>
         public string? SensorName { get; set; }
 
         /// <summary>

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Buffer } from 'buffer';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-user-details',
@@ -12,14 +13,17 @@ import { Buffer } from 'buffer';
 })
 export class UserDetailsComponent implements OnInit, OnDestroy {
   user?: User;
-  private unsubscribe$ = new Subject<void>();
+  userDetailsForm: FormGroup = {} as FormGroup;
   image: any;
+  private unsubscribe$ = new Subject<void>();
   
   constructor(private router:Router,  
               private route: ActivatedRoute,
-              private userService: UsersService) { }
+              private userService: UsersService,
+              private formBuilder: FormBuilder,) { }
 
   ngOnInit(): void {
+
     this.route.params.pipe(takeUntil(this.unsubscribe$))
       .subscribe(params => {
         const id = params['id'];
@@ -30,6 +34,8 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
               this.user = user;
               var originalBase64ImageStr = Buffer.from(this.user.picture).toString('utf8');
               this.image = 'data:image/png;base64,' + originalBase64ImageStr;
+              this.setUserDetails(this.user);
+              this.userDetailsForm.disable();
             },
             error: (error: any) => {
               console.log(error);
@@ -45,6 +51,15 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 
   editUser(id: string): void {
     this.router.navigate(['../../edituser', id], {relativeTo: this.route});
+  }
+
+  setUserDetails(user: User): void {
+    this.userDetailsForm = this.formBuilder.group({
+      name: [user.name],
+      email: [user.email],
+      phoneNumber: [user.phoneNumber],
+      role: [user.role]
+    });
   }
 
 }
