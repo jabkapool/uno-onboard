@@ -1,0 +1,64 @@
+.container-fluid {
+    padding: 1px;
+    margin-left: 58px;
+}
+
+.row {
+    margin: auto;
+    width: 100%;
+    padding: 10% 20% 20% 30%;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    opacity: 0.4;
+}
+
+
+label {
+    display: block;
+    text-align: left;
+    width: 100%;
+}
+
+.inputForm {
+    display: inline;
+    width: 60%;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    height: 40px;
+}
+
+.radioClass {
+    margin-left: 10px;
+}
+
+.radioLabel {
+    margin-left: 30px;
+}
+
+button {
+    display: block;
+    background-color: #0902D4;
+    color: #fff; 
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 4px;
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 60%;
+    height: 40px; 
+}
+
+.errorMessage {
+    color: red;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+.required {
+    font-size: 1.5rem;
+    color: red;
+    margin-left: 10px;
+}

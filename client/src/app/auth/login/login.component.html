@@ -1,0 +1,21 @@
+<p class="subtitle">Enter your credentials to access your account.</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="text" class="form-rounded" formControlName="email">
+        <div *ngIf="loginForm.controls.email.invalid">Email is invalid</div>
+        <div *ngIf="loginForm.controls.email.errors?.['required']">Email is required.</div>
+        <br />
+        <label for="password">Password:</label>
+        <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-rounded" formControlName="password"
+            (click)="tooglePasswordVisibility()">
+        <div *ngIf="loginForm.controls.password.errors?.['required']">Password is required.</div>
+        <div *ngIf="loginForm.controls.password.errors?.['minLength']">Password must be at least 8 characters long.
+        </div>
+        <p class="forgot"><a [routerLink]="'../passwordrecovery'">forgot my password</a></p>
+        <button type="submit">Enter</button>
+    </div>
+    <div *ngIf="errorFlag" class="errorMessage">
+        {{errorMessage}}
+    </div>
+</form>

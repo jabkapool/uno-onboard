@@ -1,0 +1,35 @@
+<div class="container-fluid">
+    <div class="row">
+        <div *ngIf="user">
+            <div class="col-md-12 userDetails">
+                <form [formGroup]="userDetailsForm">
+                    <div>
+                        <span class="edit" (click)="editUser(user.id)"><img src="assets/pictures/users/EditUser.png"/></span>
+                        <label for="name">Name</label>
+                        <input id="name" type="text" class="form-rounded inputForm" formControlName="name">
+                    </div>
+                    <br/>
+                    <div>
+                        <label for="email">Email</label>
+                        <input id="email" type="email" type="text" class="form-rounded inputForm" formControlName="email">
+
+                    </div>
+                    <br/>
+                    <div>
+                        <label for="phoneNumber">Phone Number</label>
+                        <input id="phoneNumber" type="text" class="form-rounded inputForm" formControlName="phoneNumber">
+                    </div>
+                    <br/>
+                    <div>
+                        <label for="role">Role</label>
+                        <input id="role" type="text" class="form-rounded inputForm" formControlName="role">
+                    </div> 
+                    <br/>
+                    <div>
+                        <img [src]="image" id="picture" alt="user image" class="userImage">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

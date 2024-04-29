@@ -1,0 +1,147 @@
+.container-fluid {
+    height: 415px;
+    padding: 1px;
+    margin-left: 58px;
+}
+
+.form-group {
+    margin: 0 0 0 60px;
+}
+
+.top {
+    margin: 20px 0 0 0;
+}
+
+.title {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.buttonCancel {
+    float: right;
+    padding-right:10px;
+}
+
+.buttonSave {
+    float: right;
+    padding-right:200px;
+}
+
+.edit {
+    float: right;
+    padding-right:80px;
+}
+
+button {   
+    background-color: #0902D4;
+    color: #fff; 
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 4px;
+    font-size: 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 150px;
+    height: 40px; 
+}
+
+.grey {
+    background-color: transparent;
+    border: #0902D4 1px solid;
+    color:  #0902D4;
+}
+
+.medium-top {
+    margin: 20px 0 0 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid black;
+}
+
+.category {
+    font-size: 1.5em;
+}
+
+.category-desc {
+    font-size: 1.5em;
+    margin-left:20px;
+}
+
+.private {
+    margin: 0 0 0 100px;
+}
+
+.medium-bottom {
+    display: inline-block;
+    margin: 20px 0 0 0;
+    min-height: 80px;
+}
+
+.mb-one {
+    display: inline-block;
+}
+
+.mb-two {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.mb-three {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.description-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.description {
+    font-size: 1.0em;
+    margin-top:20px;
+}
+
+.bottom {
+    margin: 20px 0 0 40px;
+    display: inline-block;
+}
+
+.dashboards {
+    display: inline-block;
+    min-width: 400px;
+}
+
+.upload {
+    display: inline-block;
+}
+
+.required {
+    color: red;
+    font-size: xx-small;
+    padding-left:10px
+}
+
+.inputForm {
+    width: 400px;
+    height: 35px;
+    padding: 10px 0 0 5px;
+}
+
+.areaText {
+    width: 800px;
+    height: 100px;
+    padding: 0 0 80px 5px;
+}
+
+.colorText {
+    width: 180px;
+}
+
+.radioClass {
+    margin: 0 0 0 20px;
+}
+
+.radioButton {
+    margin: 0 0 0 10px;
+}
+
+ 

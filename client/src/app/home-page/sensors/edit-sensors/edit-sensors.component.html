@@ -1,0 +1,71 @@
+<div class="container-fluid">
+    <div class="row">
+        
+        <form [formGroup]="sensorEditForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div class="top">
+                    <span class="title">Edit Sensor</span>
+                    <span class="buttonSave">
+                        <button type="submit">Save</button>
+                    </span>
+                    <span class="buttonCancel">
+                        <button class="grey" (click)="cancelEditSensor()">Cancel</button>
+                    </span>
+                </div>
+                <div class="medium-top">
+                    <label for="name">Name:</label><span class="required">Mandatory</span>
+                    <div><input id="name" type="text" class="form-roundred inputForm" formControlName="name" value="{{sensor.name}}"></div>
+                    <div *ngIf="submitted && formControls['name'].errors?.['required']">Name is required.</div>
+                </div>
+
+
+                <div class="medium-bottom">
+                    
+                    <div class="mb-one">
+                        <label for="category">Category:</label><span class="required">Mandatory</span>
+                        <div>
+                        <select id="category" class="form-rounded inputForm" formControlName="category" (change)="changeCategory($event)">
+                            <option value="Temperature">Temperature</option>
+                            <option value="Humidity">Humidity</option>
+                            <option value="Sound">Sound</option>
+                            <option value="Visibility">Visibility</option>
+                            <option value="Pollution">Pollution</option>
+                        </select>
+                        </div>
+                    </div>
+
+                
+                    <div class="mb-two"> 
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Private</label>
+                        <input id="isPrivate" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" formControlName="isPrivate">
+                        </div>
+                    </div>
+
+                    <div class="mb-three">
+                        <label for="color">Color:</label>
+                            <input id="color1" class="form-check-input" type="radio" formControlName="color" value="Blue" style="background-color: blue; color: blue; width:20px; height: 20px;">
+                            <input id="color2" class="form-check-input" type="radio" formControlName="color" value="Red" style="background-color: red; color:red; width:20px; height: 20px;">
+                            <input id="color3" class="form-check-input" type="radio" formControlName="color" value="Green" style="background-color: green; color: green; width:20px; height: 20px;">
+                            <input id="color4" class="form-check-input" type="radio" formControlName="color" value="Yellow" style="background-color: yellow; color: yellow; width:20px; height: 20px;">
+                    </div>
+
+                </div>
+
+                <div>
+                    <label for="description">Description:</label>
+                    <div>
+                    <textarea id="description" class="form-rounded inputForm areaText" formControlName="description"></textarea>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                
+                
+            </div>
+            <div *ngIf="errorFlag" class="errorMessage">
+                {{errorMessage}}
+            </div>
+        </form>
+    </div>
+</div>

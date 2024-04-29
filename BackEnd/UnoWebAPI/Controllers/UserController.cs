@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UnoWebApi.Application.Helpers;
 using UnoWebApi.Application.Services.Interfaces;
-using UnoWebApi.Domain.DTOs;
+using UnoWebApi.Application.Dtos;
 using UnoWebApi.Domain.Entities;
 using UnoWebApi.Domain.Models;
 
@@ -22,11 +22,11 @@ namespace UnoWebAPI.Controllers {
         /// Get all the users in the system.
         /// </summary>
         /// <returns>All the users in the system.</returns>
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAllUsers")]
-        public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAllUsers() {
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto>>> GetAllUsers() {
 
-            IEnumerable<ApplicationUser> users = await _userService.GetAllUsersAsync();
+            IEnumerable<ApplicationUserDto> users = await _userService.GetAllUsersAsync();
             return Ok(users);
         }
 
@@ -35,15 +35,33 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="id">The Guid of the user.</param>
         /// <returns>The user object.</returns>
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetUserById/{id}")]
-        public async Task<ActionResult<ApplicationUser?>> GetUserById(Guid id) {
+        public async Task<ActionResult<ApplicationUserDto?>> GetUserById(Guid id) {
 
-            ApplicationUser? user = await _userService.GetUserByIdAsync(id);
-            if (user == null) {
+            ApplicationUserDto? applicationUserDto = await _userService.GetUserByIdAsync(id);
+            if (applicationUserDto == null) {
                 return NotFound("User not found!");
             }
-            return Ok(user);
+            return Ok(applicationUserDto);
+        }
+
+         /// <summary>
+        /// Filter users by name or email.
+        /// <param name="searchQuery">The query to search users in columns Name and Email</param>
+        /// <param name="orderBy">Order by Name or Email</param>
+        /// <param name="direction">0 for ascending, 1 for descending</param>
+        /// <returns>A list of ordered users.</returns>
+        /// </summary>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("ListUsers")]
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto>>> ListUsers(string searchQuery, string orderBy = "Name", int direction = 0) {
+
+            IEnumerable<ApplicationUserDto?>? applicationUserDto = await _userService.ListUsersAsync(searchQuery, orderBy, direction);
+            if(applicationUserDto == null) {
+                return NotFound("No users found!");
+            }
+            return Ok(applicationUserDto);
         }
 
         /// <summary>
@@ -51,12 +69,12 @@ namespace UnoWebAPI.Controllers {
         /// </summary>
         /// <param name="name">string with the name of the user.</param>
         /// <returns>The user object.</returns>
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetUserByName")]
-        public async Task<ActionResult<IEnumerable<ApplicationUser?>>> GetUserByName(string name) {
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto?>>> GetUserByName(string name) {
 
-            IEnumerable<ApplicationUser?> user = await _userService.GetUserByNameAsync(name);
-            return Ok(user);
+            IEnumerable<ApplicationUserDto?> applicationUserDto = await _userService.GetUserByNameAsync(name);
+            return Ok(applicationUserDto);
         }
 
         /// <summary>
@@ -79,7 +97,7 @@ namespace UnoWebAPI.Controllers {
                 if(status == 0) {
                     return BadRequest(message);
                 }
-                return Ok(message);
+                return Ok(new { OkMessage = message });
             }
             catch(Exception ex) {
                 _logger.LogError(ex.Message);
@@ -100,13 +118,42 @@ namespace UnoWebAPI.Controllers {
                 if(!ModelState.IsValid) {
                     return BadRequest("Invalid payload!");
                 }
-                (int status, string message) = await _userService.Login(model);
+                (int status, LoginResult loginResult) = await _userService.Login(model);
                 if(status == 0) {
-                    return BadRequest(message);
+                    return BadRequest(loginResult);
                 }
-                return Ok(message);
+                (int refreshTokenStatus, _) = await _userService.CreateRefreshToken(model.Email!);
+                if (refreshTokenStatus == 0) {
+                    return BadRequest("Failed to create refresh token!");
+                }
+                return Ok(loginResult);
             }
             catch(Exception ex) {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Http method to change user's password.
+        /// </summary>
+        /// <param name="user">The user email.</param>
+        /// <returns>Ok 200 on success, otherwise Error http 40x</returns>
+        [AllowAnonymous]
+        [HttpPut("PasswordRecovery")]
+        public async Task<IActionResult> PasswordRecovery([FromBody] PasswordRecovery user) {
+
+            try {
+                if (!EmailHelper.IsEmailValid(user.Email!)) {
+                    return BadRequest("Invalid email address!");
+                }
+                (int status, string message) = await _userService.PasswordRecoveryAsync(user.Email!);
+                if (status == 0) {
+                    return BadRequest(message);
+                }
+                return Ok(new {OkMessage = message});
+            }
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -125,16 +172,11 @@ namespace UnoWebAPI.Controllers {
                 if (!ModelState.IsValid) {
                     return BadRequest("Invalid payload!");
                 }
-                ApplicationUser? user = await _userService.GetUserByIdAsync(userDto.Id);
-                if (user == null) {
-                    return NotFound("User not found!");
+                ApplicationUserDto? applicationUserDto = await _userService.UpdateUserAsync(userDto);
+                if (applicationUserDto == null) {
+                    return NotFound("Could not update user!");
                 }
-                user = ApplicationUserDto.ConvertDtoToEntity(userDto, user);
-                ApplicationUser? updatedUser = await _userService.UpdateUserAsync(user);
-                if (updatedUser == null) {
-                    return NotFound("User not found!");
-                }
-                return Ok(updatedUser);
+                return Ok(applicationUserDto);
             }
             catch (Exception ex) {
                 _logger.LogError(ex.Message);
@@ -156,12 +198,25 @@ namespace UnoWebAPI.Controllers {
                 if (user == null) {
                     return NotFound("User not found!");
                 }
-                return Ok("User deleted successfully!");
+                return Ok(new { OkMessage = "User deleted successfully!" });
             }
             catch (Exception ex) {
                 _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        ///<summary>
+        /// Logout user from the application
+        ///</summary>
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout([FromBody] ApplicationUserDto user) {
+            bool logOutUser = await _userService.UserLogout(user.Id);
+            if (!logOutUser) {
+                return BadRequest("Failed logging out the user!");
+            }
+            return Ok(new { OkMessage = "User logged out successfully!" });
         }
     }
 }

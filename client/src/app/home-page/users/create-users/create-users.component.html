@@ -1,0 +1,47 @@
+<div class="container-fluid">
+    <div class="row">
+        <h1>Create User </h1>
+        <p class="subtitle">Enter User Details:</p><br/>
+        <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div>
+                    <label for="name">Name:</label>
+                    <input id="name" type="text" class="form-roundred inputForm" formControlName="name"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['name'].errors?.['required']">Name is required.</div>                    
+                </div>
+                <br/>
+
+                <div>
+                    <label for="email">Email:</label>
+                    <input id="email" type="text" class="form-rounded inputForm" formControlName="email"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['email'].errors?.['email']">Email is invalid</div>
+                    <div *ngIf="submitted && formControls['email'].errors?.['required']">Email is required.</div>                   
+                </div>
+                <br/>
+                
+                <div>
+                    <label for="role">Role:</label>
+                    Admin<input type="radio" id="admin" name="role" value="Admin" class="radioClass" formControlName="role">
+                    <span class="radioLabel">User</span><input type="radio" id="User" name="role" value="User" class="radioClass" formControlName="role"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['role'].errors?.['required']">Role is required.</div>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="phone">Phone:</label>
+                    <input id="phone" type="text" class="form-rounded inputForm" formControlName="phone"><span class="required">*</span>
+                    <div *ngIf="submitted && formControls['phone'].errors?.['required']">Phone is required.</div>
+                </div>
+                <br/>
+                <br/>
+                
+                <div>
+                    <button type="submit">Enter</button>
+                </div>
+            </div>
+            <div *ngIf="errorFlag" class="errorMessage">
+                {{errorMessage}}
+            </div>
+        </form>
+    </div>
+</div>

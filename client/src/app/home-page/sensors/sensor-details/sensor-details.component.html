@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div class="row">
+        <div *ngIf="sensor">
+            <div class="col-md-12 sensorDetails">
+                <div class="top">
+                    <span class="title">Sensor Informations</span>
+                    <span class="edit" (click)="editSensor(sensor.id)"><img src="assets/pictures/sensors/EditSensor.png"/></span>
+                </div>
+                <div class="medium-top">
+                    <span class="category">Category:</span>
+                    <label for="category" class="category-desc">{{sensor.category}}</label>
+                    <label for="isPrivate" class="private">Private: <span *ngIf="sensor.isPrivate"><img src="assets/pictures/sensors/Private.png"/></span><span *ngIf="!sensor.isPrivate"><img src="assets/pictures/sensors/NotPrivate.png"></span></label>
+                   <span class="color">Color:</span>
+                    <label for="color" class="color-desc" [style.background-color]="sensor.color">{{sensor.color}}</label> 
+                
+                    <span class="form-check form-switch favourite">
+                        <input class="form-check-input" type="checkbox" role="switch" id="isFavourite" [(ngModel)]="sensor.isFavourite" (change)="changeFavourite($event)">
+                        <label class="form-check-label" for="isFavourite">Mark Sensor as Favourite</label>
+                        <label class="favSensorMessage" *ngIf="toogleMessageDisplay==='changed'">{{toogleMessage}}</label>
+                         
+                    </span>
+
+                </div>
+                <div class="medium-bottom">
+                    <div class="description-title">Description</div>
+                    <label for="description" class="description">{{sensor.description}}</label> 
+                </div>
+                
+                <div class="bottom">
+                    <div>Files</div>
+                    <div class="dashboards">Dashboards</div>
+                    <div class="upload">Upload Sensor Data
+                        <input hidden type="file" #uploader (change)="uploadFile($event)"/>
+                        <button class="btn btn-primary" (click)="uploader.click()">Upload</button>
+                    
+                    </div>
+                    <p class="content"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
