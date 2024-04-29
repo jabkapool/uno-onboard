@@ -55,7 +55,13 @@ namespace UnoWebAPI.Controllers {
         [HttpGet("ListSensors")]
         public async Task<ActionResult<IEnumerable<SensorsDto?>?>> ListSensors(string searchQuery, string orderBy = "Name", int direction = 0) {
 
-            IEnumerable<SensorsDto?>? sensorsDto = await _sensorsService.ListSensorsAsync(searchQuery, orderBy, direction);
+            Guid? userId = GetUserId(User);
+            if(userId == null) {
+                return Unauthorized();
+            }
+            ApplicationUserDto? user = await _userService.GetUserByIdAsync(userId.Value);
+
+            IEnumerable<SensorsDto?>? sensorsDto = await _sensorsService.ListSensorsAsync(user!,searchQuery, orderBy, direction);
             return Ok(sensorsDto);
         }
 

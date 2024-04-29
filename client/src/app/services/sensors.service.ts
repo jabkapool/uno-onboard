@@ -74,4 +74,9 @@ export class SensorsService {
     const url = `${this.sensorsUrl}/data/GetFavouriteSensorsData`; 
     return this.http.get<FavouriteSensorsDataDto[]>(url, {params});
   }
+
+  public getSensorsByUser(userId: string): Observable<Sensor[]> {
+    const url = `${this.sensorsUrl}/GetListOfSensorsByUser`;
+    return this.http.get<Sensor[]>(url+'?userId='+userId);
+  }
 }

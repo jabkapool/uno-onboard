@@ -2,13 +2,13 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="email">Email</label>
-        <input id="email" type="text" class="form-rounded" formControlName="email">
+        <input id="email" type="text" class="form-rounded" formControlName="email" autocomplete="off">
         <div *ngIf="loginForm.controls.email.invalid">Email is invalid</div>
         <div *ngIf="loginForm.controls.email.errors?.['required']">Email is required.</div>
         <br />
         <label for="password">Password:</label>
         <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-rounded" formControlName="password"
-            (click)="tooglePasswordVisibility()">
+            (click)="tooglePasswordVisibility()" autocomplete="off">
         <div *ngIf="loginForm.controls.password.errors?.['required']">Password is required.</div>
         <div *ngIf="loginForm.controls.password.errors?.['minLength']">Password must be at least 8 characters long.
         </div>
