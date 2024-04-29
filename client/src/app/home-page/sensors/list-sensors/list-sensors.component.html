@@ -1,33 +1,72 @@
 <div class="container-fluid">
-    <br/>
-    <h1 class="title">List Sensors</h1>
-    <div class="search">
-      <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
-      <button class="searchButton" (click)="filterSensors()">Search</button>
-      <button [ngClass]="isUserAdmin ? 'createSensorButton' : 'createSensorButton canNotClick'" (click)="createSensor()">Add new sensor</button>
-    </div>
-    <div class="row">
-        <table mat-table name="sensorsTable" [dataSource]="sensors">
+      <br/>
+      <h1 class="title">List Sensors</h1>
+      <div class="search">
+        <input id="search" type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+        <button class="searchButton" (click)="searchSensors()">Search</button>
+        <button class="createSensorButton" (click)="createSensor()">Add new sensor</button>
+      </div>
+      <div id="sub-container" class="container" style="margin-left: 0;">
+        <div class="row">
 
-            <ng-container matColumnDef="nome">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let sensor"><img src="assets/pictures/sensors/sensors.png" alt="sensors-logo" class="sensors-logo"><span class="sensor-name" (click)="goToSensorDetails(sensor.id)">{{sensor.name}}</span></td>
-              </ng-container>
-              <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef>Category</th>
-                <td mat-cell *matCellDef="let sensor">{{sensor.category}}</td>
-              </ng-container>
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>Status</th>
-                <td mat-cell *matCellDef="let sensor">Private <span *ngIf="sensor.isPrivate"><img src="assets/pictures/sensors/Private.png"/></span><span *ngIf="!sensor.isPrivate"><img src="assets/pictures/sensors/NotPrivate.png"></span></td>
-              </ng-container>
+        <div class="col-md-11 sensors">
+            <table mat-table name="sensorsTable" [dataSource]="sensors">
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    </div>
-    <div *ngIf="noData" class="errorMessage">
-      {{noDataMessage}}
-  </div>
+                <ng-container matColumnDef="nome">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let sensor"><img src="assets/pictures/sensors/sensors.png" alt="sensors-logo" class="sensors-logo"><span class="sensor-name" (click)="goToSensorDetails(sensor.id)">{{sensor.name}}</span></td>
+                  </ng-container>
+                  <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef>Category</th>
+                    <td mat-cell *matCellDef="let sensor">{{sensor.category}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let sensor">Private <span *ngIf="sensor.isPrivate"><img src="assets/pictures/sensors/Private.png"/></span><span *ngIf="!sensor.isPrivate"><img src="assets/pictures/sensors/NotPrivate.png"></span></td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+        <div class="col-md-1 filters">
+            <div id="filtros" class="filtros">
+                <span class="filter">Filters</span>
+                <div class="order">Order By:</div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" value="Name" id="nameRadio" name="OrderBy" (change)="onOrderChange($event)" checked>
+                  <label class="form-check-label" for="nameRadio">
+                    Name
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" value="Category" id="categoryRadio" name="OrderBy" (change)="onOrderChange($event)">
+                  <label class="form-check-label" for="categoryRadio">
+                    Category
+                  </label>
+                </div>
+                <div>_________________________</div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" value="0" id="ascendingRadio" name="Ascending" (change)="onAscendingChange($event)" checked>
+                  <label class="form-check-label" for="ascendingRadio">
+                    Ascending
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" value="1" id="descendingRadio" name="Ascending" (change)="onAscendingChange($event)">
+                  <label class="form-check-label" for="descendingRadio">
+                    Descending
+                  </label>
+                </div>
+            </div>
+        </div>
+
+      </div>
+      </div>
+
+      <div *ngIf="noData" class="errorMessage">
+        {{noDataMessage}}
+      </div>
 </div>
 

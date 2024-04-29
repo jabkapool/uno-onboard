@@ -5,7 +5,7 @@ namespace UnoWebApi.Application.Services.Interfaces {
         Task<IEnumerable<SensorsDto>> GetAllSensorsAsync();
         Task<IEnumerable<SensorsDto>> GetSensorsByUserAsync(ApplicationUserDto user);
         Task<SensorsDto?> GetSensorByIdAsync(Guid sensorId);
-        Task<IEnumerable<SensorsDto?>?> ListSensorsAsync(string searchQuery, string orderBy, int direction);
+        Task<IEnumerable<SensorsDto?>?> ListSensorsAsync(ApplicationUserDto user, string searchQuery, string orderBy, int direction);
         Task<SensorsDto> CreateSensorAsync(SensorsDto sensorDto);
         Task<SensorsDto> UpdateSensorAsync(SensorsDto sensorDto);
         Task<IEnumerable<FavouriteSensorDto?>?> GetFavouriteSensorsAsync(Guid userId);

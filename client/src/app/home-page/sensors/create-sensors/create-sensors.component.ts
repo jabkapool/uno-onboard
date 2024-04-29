@@ -43,7 +43,8 @@ export class CreateSensorsComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
     this.sensor = this.createSensorForm.value;
-    
+    this.sensor.isPrivate = (this.createSensorForm.value.isPrivate === true) ? true : false;
+
     if(this.createSensorForm.invalid) {
       return;
     }

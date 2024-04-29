@@ -12,7 +12,8 @@ namespace UnoWebApi.Application.Mappings {
 
             CreateMap<SensorData, SensorDataDto>()
                 .ForMember(dest => dest.SensorName, opt => opt.MapFrom(src => src.Sensor!.Name))
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Sensor!.Category));
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Sensor!.Category))
+                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Sensor!.Color));
             CreateMap<SensorDataDto, SensorData>()
                 .ForMember(dest => dest.Sensor, opt => opt.Ignore());
         }

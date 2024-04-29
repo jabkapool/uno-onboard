@@ -29,6 +29,7 @@ export class EditUsersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.userEditForm = this.formBuilder.group({
+      id: ['', Validators.required],
       name: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       role: ['', Validators.required]
@@ -60,6 +61,7 @@ export class EditUsersComponent implements OnInit, OnDestroy {
 
   setFormValues(): void {
     this.userEditForm.setValue({
+      id: this.user.id,
       name: this.user.name,
       phoneNumber: this.user.phoneNumber,
       role: this.user.role

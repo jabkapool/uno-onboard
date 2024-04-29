@@ -73,3 +73,21 @@
 .btn-primary {
     min-width: 150px;
 }
+
+.filters {
+    margin-top: 20px;
+}
+
+.filter {
+    font-size: 1.0rem;
+    font-weight: bold;
+}
+
+.order {
+    padding-top: 10px;
+    font-size: 1.0rem;
+}
+
+.form-check {
+    padding-top: 20px;
+}

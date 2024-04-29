@@ -17,20 +17,22 @@ export class ListDashboardsComponent implements OnInit, OnDestroy {
   //from and to Dates should be defined in the application settings in the Frontend.
   // Also on the frontend, the user should be able to select the date range for the data they want to see, with a calendar.
   // No time for that so it's hardcoded for now.  
-  fromDate = new Date(2024,3,3);
-  toDate = new Date(2024,3,27);
+  fromDate = new Date(2024, 3, 3);
+  toDate = new Date(2024, 3, 27);
   sensorsDataDto: SensorDataDto[] = [];
   favouriteSensorsDataDto: FavouriteSensorsDataDto[] = [];
-  data=[{
-    legend:'',
+  data = [{
+    legend: '',
     dataPoints: [] as number[]
   }];
   series: any[] = [];
   legends: any[] = [];
+  displayWarningMessage: boolean = false;
+  warningMessage: string = 'You don\'t have favourite sensors yet.';
   private unsubscribe$ = new Subject<void>();
- 
-  constructor(private sensorService: SensorsService, 
-              private elm: ElementRef) { }
+
+  constructor(private sensorService: SensorsService,
+    private elm: ElementRef) { }
 
   ngOnInit(): void {
     this.showFavouriteSensorsData();
@@ -45,60 +47,68 @@ export class ListDashboardsComponent implements OnInit, OnDestroy {
     this.sensorService.getFavouriteSensorsData(this.fromDate, this.toDate)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (sensorsDataList: FavouriteSensorsDataDto[] ) => {
-          this.favouriteSensorsDataDto = sensorsDataList;
+        next: (sensorsDataList: FavouriteSensorsDataDto[]) => {
 
-          this.favouriteSensorsDataDto.forEach(x => {
+          if (sensorsDataList.length == 0) {
+            this.displayWarningMessage = true;
+            return;
+          }
+          this.favouriteSensorsDataDto = sensorsDataList;
+          
+          this.favouriteSensorsDataDto.forEach((x, idx) => {
+            let chart = '#chart';
             this.data = [{
-              legend: x.sensorDataDto[0].sensorName,
+              legend: x.sensorDataDto[idx].sensorName,
               dataPoints: x.sensorDataDto.map(y => y.numericValues)
             }];
-          });
- 
-          let stackchart = echarts.init($(this.elm.nativeElement).find('#mGraph_sale')[0]);
-          this.data.forEach( x => {
-            this.series.push({
-              name:x.legend,
-              type:'line',
-              areaStyle:{normal:{}},
-              data:x.dataPoints
+
+            chart = chart + idx;
+
+            let stackchart = echarts.init($(this.elm.nativeElement).find(chart)[0]);
+            this.data.forEach(x => {
+              this.series = [{
+                name: x.legend,
+                type: 'line',
+                areaStyle: { normal: {} },
+                data: x.dataPoints
+              }];
+
+              this.legends.push(x.legend)
             })
 
-          this.legends.push(x.legend)
-          })
-    
-          stackchart.setOption({
-            tooltip:{
-              trigger:'axis',
-              axisPointer:{
-                type:'cross',
-                label:{backgroundColor:'#6a7985'}
-              }
-            }, 
-            legend:{data:this.legends},
-            grid: {
-              left: '10%',
-              right: '10%',
-              bottom: '5%',
-              containLabel: true
+
+            stackchart.setOption({
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'cross',
+                  label: { backgroundColor: '#6a7985' }
+                }
+              },
+              legend: { data: this.legends },
+              grid: {
+                left: '10%',
+                right: '10%',
+                bottom: '5%',
+                containLabel: true
+              },
+              xAxis: [
+                {
+                  type: 'category',
+                  boundaryGap: false,
+                  data: this.favouriteSensorsDataDto[idx].sensorDataDto.map(x => x.timeStamp)
+                }
+              ],
+              yAxis: [
+                {
+                  type: 'value'
+                }
+              ],
+
+              series: this.series,
             },
-            xAxis: [
-              {
-                type: 'category',
-                boundaryGap: false,
-                data: this.favouriteSensorsDataDto[0].sensorDataDto.map(x => x.timeStamp)
-              }
-            ],
-            yAxis: [
-              {
-                type: 'value'
-              }
-            ],
-
-            series: this.series,
-          },   
-          )
-
+            )
+          });
         },
         error: (error: any) => {
           console.log(error);
