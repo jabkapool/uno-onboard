@@ -40,6 +40,9 @@ export class ListSensorsComponent implements OnInit, OnDestroy {
   }
 
   searchSensors(): void {
+    if(this.searchText === '' || this.searchText === 'undefined') {
+      this.searchText = 'undefined';
+    }
     this.sensorService.listSensors(this.searchText, this.searchCategory, this.orderBy)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
@@ -52,6 +55,9 @@ export class ListSensorsComponent implements OnInit, OnDestroy {
           this.noData = true;
         }
       });
+      if(this.searchText === '' || this.searchText === 'undefined') {
+        this.searchText = '';
+      }
   }
 
   onOrderChange(e: any) {

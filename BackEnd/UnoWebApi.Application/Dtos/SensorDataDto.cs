@@ -30,5 +30,10 @@
         /// The Description of the Sensor to which the SensorData belongs to.
         /// </summary>
         public string? Category { get; set; }
+
+        /// <summary>
+        /// The color of the Sensor.
+        /// </summary>
+        public string? Color { get; set; }
     }
 }
