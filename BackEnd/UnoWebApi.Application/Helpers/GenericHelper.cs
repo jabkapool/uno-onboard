@@ -24,6 +24,8 @@ namespace UnoWebApi.Application.Helpers {
             return password;
         }
 
+        //TODO: Add RemoveDiacritics to sensors name, description ...
+
         /// <summary>
         /// Converts a string with accentuation eg Gonçálo to a string without accentuation eg Goncalo
         /// </summary>
