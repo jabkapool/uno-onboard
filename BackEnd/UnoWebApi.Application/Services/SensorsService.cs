@@ -80,7 +80,7 @@ namespace UnoWebApi.Application.Services {
             try {
                 _unoDbContext.Sensors.Add(sensor);
                 await _unoDbContext.SaveChangesAsync();
-            } 
+            }
             catch (DbUpdateException ex) {
                 throw new DbUpdateException("Error creating sensor", ex);
             }
@@ -121,7 +121,7 @@ namespace UnoWebApi.Application.Services {
             if(favouriteSensorDto.MarkAsFavourite) {
                 favouriteSensor.Id = Guid.NewGuid();
                 _unoDbContext.FavouriteSensors.Add(favouriteSensor);
-            } 
+            }
             else {
                 FavouriteSensor? existingfavouriteSensor = await _unoDbContext.FavouriteSensors
                     .FirstOrDefaultAsync(fs => fs.UserId == favouriteSensor.UserId
@@ -165,17 +165,17 @@ namespace UnoWebApi.Application.Services {
                                                                    sd.TimeStamp <= toDate)
                                                             .Include(s => s.Sensor)
                                                             .OrderBy(s => s.Sensor!.Name)
-                                                            .OrderBy(s => s.TimeStamp)
+                                                            .ThenBy(s => s.TimeStamp)
                                                             .ToListAsync();
 
             return _mapper.Map<IEnumerable<SensorDataDto>>(sensorData);
         }
-     
+
         public async Task<IEnumerable<FavouriteSensorsDataDto>> GetFavouriteSensorsDataAsync(Guid userId, DateTime fromDate, DateTime toDate) {
 
             IEnumerable<FavouriteSensor> favouriteSensors = await _unoDbContext.FavouriteSensors.Where(fs => fs.UserId == userId).ToListAsync();
-           
-            List<FavouriteSensorsDataDto> sensorDataDtoList = new();
+
+            List<FavouriteSensorsDataDto> sensorDataDtoList = [];
 
             foreach(FavouriteSensor fs in favouriteSensors) {
                 var sensorData = await _unoDbContext.SensorsData.Where(sd => 
