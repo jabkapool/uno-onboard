@@ -177,7 +177,7 @@ namespace UnoWebApi.Application.Services {
 
             List<FavouriteSensorsDataDto> sensorDataDtoList = [];
 
-            foreach(FavouriteSensor fs in favouriteSensors) {
+            /*foreach(FavouriteSensor fs in favouriteSensors) {
                 var sensorData = await _unoDbContext.SensorsData.Where(sd => 
                                                                             fs.SensorId == sd.SensorId && 
                                                                             sd.TimeStamp >= fromDate && 
@@ -191,7 +191,32 @@ namespace UnoWebApi.Application.Services {
                     SensorDataDto = _mapper.Map<IEnumerable<SensorDataDto>>(sensorData)
                 });
 
+            }*/
+
+            /*******************************************************************************/
+            // The code above is not efficient because it makes a query to the database for each sensor.
+            // Above code detected by sonar lint SonarLint S3267: Loop should be simplified.
+            // The code below is more efficient because it makes only one query to the database.
+            /*********************************************************************************/
+
+            var sensorIds = favouriteSensors.Select(fs => fs.SensorId).ToList();
+
+            var allSensorData = await _unoDbContext.SensorsData
+                .Where(sd => sensorIds.Contains(sd.SensorId) && sd.TimeStamp >= fromDate && sd.TimeStamp <= toDate)
+                .Include(s => s.Sensor)
+                .OrderBy(s => s.TimeStamp)
+                .ToListAsync();
+
+            foreach(var sensorId in sensorIds) {
+
+                var sensorData = allSensorData.Where(sd => sd.SensorId == sensorId);
+                sensorDataDtoList.Add(new FavouriteSensorsDataDto
+                {
+                    SensorId = sensorId,
+                    SensorDataDto = _mapper.Map<IEnumerable<SensorDataDto>>(sensorData)
+                });
             }
+
             return sensorDataDtoList;
         }
 
