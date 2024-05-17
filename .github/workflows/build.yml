@@ -40,8 +40,8 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Build and analyze
         shell: powershell
+        working-directory: BackEnd
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"jabkapool_uno-onboard_51ae64f1-05a6-4a13-a879-0745f219a5a0" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
           dotnet build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-        working-directory: BackEnd
