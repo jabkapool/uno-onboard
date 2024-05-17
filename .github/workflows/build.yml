@@ -42,7 +42,6 @@ jobs:
         shell: powershell
         working-directory: BackEnd
         run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet-sonarscanner begin /k:"jabkapool_uno-onboard_51ae64f1-05a6-4a13-a879-0745f219a5a0" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+          dotnet sonarscanner begin /k:"jabkapool_uno-onboard_51ae64f1-05a6-4a13-a879-0745f219a5a0" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
           dotnet build
-          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
